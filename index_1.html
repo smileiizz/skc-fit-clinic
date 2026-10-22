@@ -1,0 +1,706 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>SKC FIT CLUB Booking</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,400;0,600;0,800;1,800&family=IBM+Plex+Sans+Thai:wght@400;500;600&family=Barlow+Condensed:wght@500;700;800&display=swap">
+<style>
+/* Layout: gym-wall poster — a black stage, one orange-lit hero strip, three clinic "tickets" in a row, member panel and back office below. Single dark look by design (black + orange). */
+:root{
+  --bg:#0c0b0a; --panel:#161412; --panel-2:#1f1c19; --line:#2e2925;
+  --fg:#f4efe9; --muted:#a59c93; --accent:#ff6a13; --accent-2:#ffae3d; --accent-ink:#1a0d03;
+  --ok:#4ccf8a; --warn:#ffc94d; --bad:#ff5a5a;
+  --f-display:"Kanit","IBM Plex Sans Thai",system-ui,sans-serif;
+  --f-body:"IBM Plex Sans Thai","Kanit",system-ui,sans-serif;
+  --f-num:"Barlow Condensed","Kanit",system-ui,sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{background:var(--bg)}
+body{background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:15px;line-height:1.6;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 48px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.wrap{max-width:1180px;margin:0 auto}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent-2);outline-offset:2px}
+.num{font-family:var(--f-num);font-variant-numeric:tabular-nums;letter-spacing:.01em}
+
+/* header */
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);margin:0 calc(-1 * max(16px,env(safe-area-inset-left,0px)));padding:10px max(16px,env(safe-area-inset-left,0px))}
+.top .wrap{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.top .brand{margin-right:auto}
+.brand{font-family:var(--f-display);font-weight:800;font-style:italic;font-size:22px;letter-spacing:.01em;line-height:1}
+.brand b{color:var(--accent)}
+nav.tabs{display:flex;gap:4px;margin-left:auto;background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:4px}
+nav.tabs button{border:0;background:transparent;padding:6px 14px;border-radius:999px;cursor:pointer;font-family:var(--f-display);font-weight:600;font-size:14px;color:var(--muted)}
+nav.tabs button[aria-selected="true"]{background:var(--accent);color:var(--accent-ink)}
+
+/* hero */
+.hero{padding-block:22px 4px;display:grid;grid-template-columns:1fr auto;gap:20px;align-items:end}
+.hero h1{font-family:var(--f-display);font-weight:800;font-style:italic;text-transform:uppercase;font-size:clamp(30px,6vw,58px);line-height:.95;margin:0;text-wrap:balance}
+.hero h1 span{color:var(--accent)}
+.hero p{margin:10px 0 0;color:var(--muted);max-width:60ch}
+.facts{display:flex;gap:10px;flex-wrap:wrap}
+.fact{border:1px solid var(--line);background:var(--panel);border-radius:10px;padding:8px 12px;min-width:110px}
+.fact small{display:block;color:var(--muted);font-size:12px}
+.fact strong{font-family:var(--f-display);font-weight:600}
+
+/* ID bar */
+/* login */
+.login{min-height:calc(100vh - 140px);display:grid;place-items:center;padding-block:32px}
+.login-card{width:min(520px,100%);background:var(--panel);border:1px solid var(--line);border-radius:20px;overflow:hidden}
+.login-top{padding:26px 24px 22px;background:linear-gradient(150deg,var(--accent) 0,var(--accent-2) 100%);color:var(--accent-ink)}
+.login-top .eyebrow{font-family:var(--f-num);font-weight:700;letter-spacing:.12em;font-size:13px;text-transform:uppercase}
+.login-top h1{font-family:var(--f-display);font-weight:800;font-style:italic;text-transform:uppercase;font-size:clamp(30px,7vw,44px);line-height:.95;margin:6px 0 8px}
+.login-top p{margin:0;font-size:14px;font-weight:500}
+.login-dates{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
+.login-dates span{background:#0c0b0a;color:#f4efe9;border-radius:8px;padding:3px 10px;font-family:var(--f-display);font-weight:600;font-size:14px}
+.login-form{padding:22px 24px 24px;display:grid;gap:12px}
+.login-form label{font-family:var(--f-display);font-weight:600;font-size:16px}
+.login-form input{width:100%;background:var(--panel-2);border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-family:var(--f-num);font-size:24px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.login-form input:focus{border-color:var(--accent);outline:none}
+.login-form input::placeholder{color:var(--muted);font-family:var(--f-body);font-size:15px;font-weight:400;letter-spacing:0;text-transform:none}
+.login-form .btn{padding:13px 16px;font-size:17px}
+.login-form .hint{font-size:13px;color:var(--muted);margin:0}
+.login-admin{border-top:1px solid var(--line);padding:12px 24px;font-size:13px;color:var(--muted);display:flex;justify-content:space-between;align-items:center;gap:8px}
+.adminbtn{padding:6px 12px;font-size:13px}
+.userchip{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted)}
+.userchip b{font-family:var(--f-num);font-size:18px;color:var(--fg);letter-spacing:.05em}
+.linkbtn{background:none;border:0;color:var(--accent-2);cursor:pointer;padding:2px 4px;font-size:13px;text-decoration:underline;text-underline-offset:3px}
+.btn{border:0;border-radius:10px;padding:10px 16px;font-family:var(--f-display);font-weight:600;font-size:15px;cursor:pointer;white-space:nowrap}
+.btn-dark{background:#0c0b0a;color:#f4efe9}
+.btn-accent{background:var(--accent);color:var(--accent-ink)}
+.btn-accent:hover{background:var(--accent-2)}
+.btn-ghost{background:transparent;border:1px solid var(--line);color:var(--fg)}
+.btn-ghost:hover{border-color:var(--muted)}
+.btn-danger{background:transparent;border:1px solid color-mix(in srgb,var(--bad) 60%,transparent);color:var(--bad)}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+
+h2.sec{font-family:var(--f-display);font-weight:800;font-style:italic;text-transform:uppercase;font-size:24px;margin:0 0 12px;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+h2.sec small{font-family:var(--f-body);font-style:normal;text-transform:none;font-weight:400;font-size:14px;color:var(--muted)}
+
+/* class cards */
+.classes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:16px;overflow:hidden;display:flex;flex-direction:column}
+.card.mine{border-color:var(--accent)}
+.card-head{padding:16px 16px 14px;background:linear-gradient(160deg,color-mix(in srgb,var(--accent) 22%,var(--panel)) 0,var(--panel) 70%);border-bottom:1px solid var(--line)}
+.date{display:flex;align-items:baseline;gap:10px}
+.date .d{font-family:var(--f-num);font-weight:800;font-size:46px;line-height:.9;color:var(--accent)}
+.date .m{font-family:var(--f-display);font-weight:600;font-size:18px}
+.date .t{margin-left:auto;font-family:var(--f-num);font-weight:700;font-size:17px;color:var(--fg);white-space:nowrap}
+.tag{display:inline-block;margin-top:10px;font-family:var(--f-num);font-weight:700;letter-spacing:.08em;font-size:13px;background:var(--fg);color:var(--bg);border-radius:6px;padding:1px 8px}
+.card h3{font-family:var(--f-display);font-weight:800;font-style:italic;text-transform:uppercase;font-size:22px;line-height:1.05;margin:8px 0 4px;text-wrap:balance}
+.card .sub{color:var(--muted);font-size:14px;margin:0}
+.card-body{padding:14px 16px 16px;display:flex;flex-direction:column;gap:12px;flex:1}
+.cap-row{display:flex;justify-content:space-between;align-items:baseline;font-size:13px;color:var(--muted)}
+.cap-row b{font-family:var(--f-num);font-size:22px;color:var(--fg);font-weight:700}
+.meter{height:8px;background:var(--panel-2);border-radius:99px;overflow:hidden}
+.meter i{display:block;height:100%;background:var(--accent);border-radius:99px;transition:width .4s}
+.meter.full i{background:var(--bad)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font-size:12px;border:1px solid var(--line);border-radius:99px;padding:2px 9px;color:var(--muted)}
+.status{font-size:12px;font-weight:600;border-radius:99px;padding:2px 10px;align-self:flex-start}
+.st-open{background:color-mix(in srgb,var(--ok) 18%,transparent);color:var(--ok)}
+.st-few{background:color-mix(in srgb,var(--warn) 18%,transparent);color:var(--warn)}
+.st-full,.st-closed{background:color-mix(in srgb,var(--bad) 18%,transparent);color:var(--bad)}
+.st-mine{background:var(--accent);color:var(--accent-ink)}
+.card-actions{display:flex;gap:8px;margin-top:auto}
+.card-actions .btn{flex:1}
+
+/* details */
+.details{margin-top:18px;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:18px}
+.details-head{display:flex;gap:12px;align-items:flex-start;justify-content:space-between;flex-wrap:wrap}
+.details h3{font-family:var(--f-display);font-weight:800;font-style:italic;text-transform:uppercase;font-size:26px;margin:0;line-height:1.05}
+.details .lead{color:var(--muted);margin:6px 0 0;max-width:65ch}
+.d-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:16px}
+.d-block h4{font-family:var(--f-display);font-weight:600;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin:0 0 8px}
+.plan{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:4px}
+.plan div{background:var(--panel-2);border-radius:8px;padding:8px;font-size:13px;line-height:1.35}
+.plan b{display:block;font-family:var(--f-num);font-size:16px;color:var(--accent-2)}
+.ex{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.ex li{display:grid;grid-template-columns:28px 1fr auto;gap:10px;align-items:center;background:var(--panel-2);border-radius:8px;padding:8px 10px}
+.ex .n{font-family:var(--f-num);font-weight:800;font-size:18px;color:var(--accent);text-align:center}
+.ex .nm{font-weight:600;line-height:1.3}
+.ex .mu{display:block;font-size:12px;color:var(--muted);font-weight:400}
+.ex .sets{font-family:var(--f-num);font-weight:700;font-size:16px;white-space:nowrap}
+.checks{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.checks li{padding-left:22px;position:relative}
+.checks li::before{content:"";position:absolute;left:2px;top:.55em;width:10px;height:10px;border-radius:3px;background:var(--accent)}
+.note{font-size:13px;color:var(--muted)}
+
+/* my bookings */
+/* my bookings — the headline block */
+.mine-panel{margin-block:20px 34px;border-radius:20px;padding:22px 20px 20px;background:linear-gradient(135deg,var(--accent) 0,var(--accent-2) 100%);color:var(--accent-ink)}
+.mine-head{display:flex;gap:16px;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;margin-bottom:16px}
+.mine-head .hi{font-size:14px;font-weight:600}
+.mine-head h2{font-family:var(--f-display);font-weight:800;font-style:italic;text-transform:uppercase;font-size:clamp(28px,5vw,40px);line-height:1;margin:4px 0 0}
+.mine-count{text-align:right;line-height:1}
+.mine-count b{font-family:var(--f-num);font-weight:800;font-size:64px}
+.mine-count span{font-family:var(--f-num);font-weight:700;font-size:24px}
+.mine-count small{display:block;font-size:13px;font-weight:600;margin-top:4px}
+.mine-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.ticket{background:#0c0b0a;color:#f4efe9;border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:10px;position:relative}
+.ticket .row1{display:flex;align-items:baseline;gap:8px}
+.ticket .dd{font-family:var(--f-num);font-weight:800;font-size:40px;line-height:.9;color:var(--accent)}
+.ticket .mm{font-family:var(--f-display);font-weight:600;font-size:16px}
+.ticket .ok{margin-left:auto;font-size:12px;font-weight:600;background:color-mix(in srgb,var(--ok) 20%,transparent);color:var(--ok);border-radius:99px;padding:2px 9px}
+.ticket .ok.wait{background:color-mix(in srgb,var(--warn) 20%,transparent);color:var(--warn)}
+.kpi small+b+small{margin-top:2px}
+.ticket .nm{font-family:var(--f-display);font-weight:800;font-style:italic;text-transform:uppercase;font-size:18px;line-height:1.1}
+.ticket .meta{font-size:13px;color:#a59c93}
+.ticket .btn{margin-top:auto}
+.ticket.slot{background:rgba(12,11,10,.14);border:2px dashed rgba(26,13,3,.35);color:var(--accent-ink);justify-content:center;align-items:center;text-align:center;min-height:150px;font-weight:600;font-size:14px}
+.ticket.slot .plus{font-family:var(--f-num);font-weight:800;font-size:34px;line-height:1}
+.mine-panel .history{margin-top:14px;font-size:13px;color:var(--accent-ink)}
+.mine-panel .history summary{cursor:pointer;font-weight:600}
+.mine-panel .history ul{margin:8px 0 0;padding-left:18px}
+.empty{border:1px dashed var(--line);border-radius:12px;padding:20px;color:var(--muted);text-align:center}
+
+/* admin */
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:16px}
+.kpi{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.kpi small{color:var(--muted);font-size:12px;display:block}
+.kpi b{font-family:var(--f-num);font-size:32px;line-height:1.1}
+.kpi b span{font-size:18px;color:var(--muted)}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+.toolbar input,.toolbar select{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:8px 12px;min-width:0}
+.toolbar input{flex:1;min-width:180px}
+.admin-cols{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.acol{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px;min-width:0}
+.acol h4{margin:0;font-family:var(--f-display);font-weight:600;font-size:15px;line-height:1.3}
+.acol .when{font-size:12px;color:var(--muted)}
+.acol .cnt{font-family:var(--f-num);font-size:28px;font-weight:800;color:var(--accent);margin:4px 0}
+.idlist{list-style:none;margin:8px 0 0;padding:0;display:grid;gap:4px;max-height:420px;overflow:auto}
+.idlist li{display:flex;justify-content:space-between;gap:8px;background:var(--panel-2);border-radius:6px;padding:5px 8px;font-size:13px}
+.idlist .id{font-family:var(--f-num);font-weight:700;font-size:16px;letter-spacing:.04em}
+.idlist .ts{color:var(--muted);font-size:12px;font-variant-numeric:tabular-nums}
+.tbl-wrap{overflow-x:auto;background:var(--panel);border:1px solid var(--line);border-radius:12px;margin-top:8px}
+.admin-fab{position:fixed;right:calc(16px + env(safe-area-inset-right,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:8;background:var(--panel);color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:7px 14px;font-size:12px;cursor:pointer;opacity:.75}
+.admin-fab:hover,.admin-fab:focus-visible{opacity:1;color:var(--fg);border-color:var(--muted)}
+.lock{max-width:420px;margin:40px auto;background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:22px;display:grid;gap:12px}
+.lock h2{margin:0;font-family:var(--f-display);font-weight:800;font-size:24px}
+.lock input{width:100%;background:var(--panel-2);border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-size:17px}
+.lock input:focus{border-color:var(--accent);outline:none}
+.live{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--ok);font-weight:600}
+.live::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 3px color-mix(in srgb,var(--ok) 25%,transparent)}
+.pill{display:inline-block;border-radius:99px;padding:1px 9px;font-size:12px;font-weight:600}
+.pill.book{background:color-mix(in srgb,var(--ok) 18%,transparent);color:var(--ok)}
+.pill.cancel{background:color-mix(in srgb,var(--bad) 18%,transparent);color:var(--bad)}
+table{border-collapse:collapse;width:100%;min-width:640px;font-size:14px}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--f-display);font-weight:600;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+td.id{font-family:var(--f-num);font-weight:700;font-size:16px}
+tr:last-child td{border-bottom:0}
+
+/* modal */
+.scrim{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:20;display:grid;place-items:center;padding:16px}
+.modal{background:var(--panel);border:1px solid var(--line);border-radius:16px;width:min(460px,100%);padding:20px;display:grid;gap:12px}
+.modal h3{margin:0;font-family:var(--f-display);font-weight:800;font-size:22px;line-height:1.2}
+.modal .sum{background:var(--panel-2);border-radius:10px;padding:10px 12px;font-size:14px}
+.modal .sum b{color:var(--accent-2)}
+.reasons{display:grid;gap:6px}
+.reasons label{display:flex;gap:8px;align-items:center;background:var(--panel-2);border-radius:8px;padding:8px 10px;cursor:pointer;font-size:14px}
+.modal textarea{width:100%;min-height:72px;background:var(--panel-2);border:1px solid var(--line);border-radius:10px;padding:8px 10px;resize:vertical}
+.modal .row{display:flex;gap:8px;justify-content:flex-end}
+.err{color:var(--bad);font-size:13px;margin:0}
+
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--fg);color:var(--bg);padding:10px 16px;border-radius:10px;font-weight:600;z-index:30;max-width:calc(100% - 32px)}
+.banner{background:color-mix(in srgb,var(--warn) 14%,var(--panel));border:1px solid color-mix(in srgb,var(--warn) 40%,transparent);color:var(--warn);border-radius:10px;padding:10px 14px;font-size:14px;margin-bottom:16px}
+
+@media (max-width:900px){
+  .classes,.admin-cols,.mine-list{grid-template-columns:1fr}
+  .ticket.slot{min-height:90px}
+  .d-grid{grid-template-columns:1fr}
+  .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .hero{grid-template-columns:1fr}
+}
+@media (max-width:520px){
+  .plan{grid-template-columns:repeat(2,minmax(0,1fr))}
+  nav.tabs{margin-left:0;width:100%}
+  nav.tabs button{flex:1}
+  .mine-count b{font-size:48px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+
+html,body{margin:0}
+[hidden]{display:none!important}
+img{max-width:100%}
+.step{display:grid;gap:10px}
+.pin-who{font-size:14px;color:var(--muted)}
+.pin-who b{font-family:var(--f-num);font-size:20px;color:var(--fg);letter-spacing:.05em}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <div class="brand">SKC <b>FIT CLUB</b></div>
+  <div class="userchip" id="userchip" hidden>รหัส <b id="chip-id"></b><button class="linkbtn" id="logout">ออกจากระบบ</button></div>
+
+</div></header>
+
+<main class="wrap">
+  <div id="db-banner" class="banner" hidden></div>
+
+  <!-- LOGIN -->
+  <section id="view-login" class="login" hidden>
+    <div class="login-card">
+      <div class="login-top">
+        <div class="eyebrow">SKC FIT CLUB · Training Clinic Series</div>
+        <h1>ลงทะเบียน<br>เข้าจองคลาส</h1>
+        <p>3 คลินิก 3 เป้าหมาย รับคลาสละ 20 คน · ฟิตเนสอาคารกีฬา</p>
+        <div class="login-dates"><span>3 พ.ย. 69</span><span>24 พ.ย. 69</span><span>8 ธ.ค. 69</span></div>
+        <p style="margin-top:8px">ทุกคลาสเวลา 17.30–18.30 น.</p>
+      </div>
+      <form class="login-form" id="login-form" autocomplete="off" novalidate>
+        <div id="step-emp" class="step">
+          <label for="login-emp">รหัสพนักงาน</label>
+          <input id="login-emp" maxlength="15" placeholder="เช่น 650123" autofocus>
+        </div>
+        <div id="step-pin" class="step" hidden>
+          <div class="pin-who">รหัสพนักงาน <b id="pin-emp"></b> <button type="button" class="linkbtn" id="pin-back">เปลี่ยนรหัส</button></div>
+          <label for="login-pin" id="pin-label">PIN 4 หลัก</label>
+          <input id="login-pin" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="4" autocomplete="off" placeholder="••••">
+          <div id="pin-confirm-wrap" class="step" hidden>
+            <label for="login-pin2">ยืนยัน PIN อีกครั้ง</label>
+            <input id="login-pin2" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="4" autocomplete="off" placeholder="••••">
+          </div>
+          <p class="hint" id="pin-hint"></p>
+        </div>
+        <p class="err" id="login-err" hidden></p>
+        <button class="btn btn-accent" id="login-btn" type="submit">ถัดไป</button>
+        <p class="hint">ใช้รหัสพนักงานของคุณเองเท่านั้น ระบบจะใช้รหัสนี้บันทึกการจองและการยกเลิก</p>
+      </form>
+    </div>
+  </section>
+
+  <!-- HOME -->
+  <section id="view-home" hidden>
+    <div class="hero">
+      <div>
+        <h1>Training Clinic <span>Series</span></h1>
+        <p>3 คลินิก 3 เป้าหมาย เรียนรู้เทคนิค ฝึกจริง และนำไปใช้ได้จริง สอนโดยทีม SKC FIT CLUB รับคลาสละ 20 คน 1 คนสามารถจองได้มากกว่า 1 คลาส</p>
+      </div>
+      <div class="facts">
+        <div class="fact"><small>สถานที่</small><strong>ฟิตเนสอาคารกีฬา</strong></div>
+      </div>
+    </div>
+
+    <section class="mine-panel" aria-labelledby="mine-title">
+      <div class="mine-head">
+        <div><div class="hi" id="mine-hi"></div><h2 id="mine-title">การจองของฉัน</h2></div>
+        <div class="mine-count"><b id="mine-n">0</b><span> / 3</span><small>คลาสที่จองไว้</small></div>
+      </div>
+      <div id="mine"></div>
+    </section>
+
+    <h2 class="sec">คลาสทั้งหมด <small>กดดูรายละเอียดเพื่อดูโปรแกรม 60 นาทีและท่าฝึก</small></h2>
+    <div class="classes" id="classes"></div>
+    <div id="details"></div>
+  </section>
+
+  <!-- ADMIN (password + Editor access) -->
+  <section id="view-admin" hidden>
+    <form class="lock" id="lock-form" autocomplete="off">
+      <h2>สำหรับทีมแอดมิน</h2>
+      <p class="note" style="margin:0">ใส่รหัสผ่านเพื่อดูข้อมูลการจองแบบ real-time</p>
+      <label for="admin-pw" class="note">รหัสผ่าน</label>
+      <input id="admin-pw" type="password" autocomplete="off">
+      <p class="err" id="lock-err" hidden></p>
+      <div class="row" style="display:flex;gap:8px;justify-content:flex-end"><button class="btn btn-ghost" type="button" id="lock-back">กลับ</button><button class="btn btn-accent" type="submit">เข้าดูข้อมูล</button></div>
+    </form>
+    <div id="admin-dash" hidden>
+      <div class="hero" style="padding-bottom:12px">
+        <div><h1>Back <span>Office</span></h1>
+        <p>ยอดจอง รายชื่อรหัสพนักงาน และเหตุผลการยกเลิก <span class="live" id="live">อัปเดตทุก 15 วินาที</span></p></div>
+        <div class="facts"><button class="btn btn-ghost" id="admin-exit">ออกจากหน้าแอดมิน</button></div>
+      </div>
+      <div id="admin-msg" class="banner" hidden></div>
+      <div class="kpis" id="kpis"></div>
+      <div class="toolbar"><input id="admin-search" placeholder="ค้นหารหัสพนักงาน"></div>
+      <h2 class="sec">ผู้จองปัจจุบัน</h2>
+      <div class="admin-cols" id="admin-cols"></div>
+      <h2 class="sec" style="margin-top:28px">การยกเลิก <small id="cx-count"></small></h2>
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>เวลายกเลิก</th><th>รหัสพนักงาน</th><th>คลาส</th><th>เหตุผล</th></tr></thead>
+        <tbody id="cx-body"></tbody>
+      </table></div>
+      <h2 class="sec" style="margin-top:28px">รีเซ็ต PIN <small id="reg-count"></small></h2>
+      <form class="toolbar" id="unbind-form" autocomplete="off">
+        <input id="unbind-emp" placeholder="รหัสพนักงานที่ลืม PIN">
+        <button class="btn btn-ghost" type="submit">รีเซ็ต PIN</button>
+      </form>
+      <p class="note" id="unbind-msg" hidden></p>
+      <p class="note" style="margin-top:0">ใช้เมื่อพนักงานลืม PIN หรือแจ้งว่ามีคนอื่นตั้ง PIN ด้วยรหัสของตัวเอง หลังรีเซ็ต พนักงานเข้าสู่ระบบแล้วตั้ง PIN ใหม่ได้ การจองเดิมยังอยู่</p>
+      <h2 class="sec" style="margin-top:28px">Log ทั้งหมด <small id="log-count"></small></h2>
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>เวลา</th><th>รายการ</th><th>รหัสพนักงาน</th><th>คลาส</th></tr></thead>
+        <tbody id="log-body"></tbody>
+      </table></div>
+    </div>
+  </section>
+
+</main>
+
+<button class="admin-fab" id="to-admin" type="button">สำหรับแอดมิน</button>
+<div id="modal-root"></div>
+<div id="toast" class="toast" hidden></div>
+
+<script>
+const CAP = 20;
+const CLASSES = [
+  { id:"c1", no:"01", day:"3", mon:"พ.ย. 69", dateTh:"วันอังคารที่ 3 พฤศจิกายน 2569 เวลา 17.30–18.30 น.", start:"2026-11-03T17:30:00+07:00",
+    title:"Glutes & Legs Builder", en:"Build a Stronger Lower Body",
+    lead:"เสริมความแข็งแรงของสะโพกและขา สร้างกล้ามเนื้อ และกระชับรูปร่าง",
+    focus:["สะโพกและต้นขา","ความแข็งแรงในการทรงตัว","กระชับรูปร่าง","ลดความเสี่ยงบาดเจ็บ"],
+    equip:"Dumbbell + Bodyweight + Smith Machine",
+    plan:[["0–5","รู้จักกล้ามเนื้อและหลักการฝึก"],["5–12","Warm-up & Activation"],["12–40","เทคนิคและฝึกจริง 5 ท่า"],["40–53","Guided Practice (2–3 รอบ)"],["53–60","Cool-down & Q&A"]],
+    ex:[["Dumbbell Sumo Squat","Quads + Glutes","3 × 8–12"],["Dumbbell Romanian Deadlift","Hamstrings + Glutes","3 × 8–12"],["Dumbbell Reverse Lunge","Glutes + Quads","3 × 8–10 ต่อข้าง"],["Dumbbell Hip Thrust","Glutes","3 × 10–12"],["Smith Machine Squat","Quads + Glutes","3 × 8–12"]],
+    gets:["กล้ามเนื้อสะโพกและขาแข็งแรงขึ้น","กระชับสัดส่วนอย่างยั่งยืน","ท่าทางและการทรงตัวดีขึ้น","นำไปฝึกต่อได้อย่างมั่นใจ"] },
+  { id:"c2", no:"02", day:"24", mon:"พ.ย. 69", dateTh:"วันอังคารที่ 24 พฤศจิกายน 2569 เวลา 17.30–18.30 น.", start:"2026-11-24T17:30:00+07:00",
+    title:"Upper Body Strength Builder", en:"Build a Stronger Upper Body",
+    lead:"เสริมกล้ามเนื้อช่วงบนให้แข็งแรง กระชับ และสมดุล ด้วยดัมเบลและเครื่องเวท",
+    focus:["อก หลัง ไหล่ และแขน","ท่าทางและความสมดุล","แข็งแรงในชีวิตประจำวัน","ลดอาการปวดไหล่/หลัง"],
+    equip:"Dumbbell + Machine",
+    plan:[["0–5","รู้จักกล้ามเนื้อและหลักการฝึก"],["5–12","Warm-up & Activation"],["12–40","เทคนิคและฝึกจริง 5 ท่า"],["40–53","Guided Practice (2–3 รอบ)"],["53–60","Cool-down & Q&A"]],
+    ex:[["Dumbbell Chest Press","Chest + Triceps","3 × 8–12"],["Lat Pulldown (Machine)","Back","3 × 8–12"],["Seated Row (Machine)","Back + Biceps","3 × 10–12"],["Dumbbell Shoulder Press","Shoulders","3 × 8–10"],["Rear Delt Fly (Dumbbell)","Shoulders (Rear)","3 × 10–12"]],
+    gets:["กล้ามเนื้อช่วงบนแข็งแรงและสมดุล","ท่าทางดีขึ้น ลดอาการไหล่/หลัง","ใช้ดัมเบลและเครื่องเวทได้ถูกต้อง","นำไปฝึกต่อเองได้"] },
+  { id:"c3", no:"03", day:"8", mon:"ธ.ค. 69", dateTh:"วันอังคารที่ 8 ธันวาคม 2569 เวลา 17.30–18.30 น.", start:"2026-12-08T17:30:00+07:00",
+    title:"Functional Movement & Conditioning", en:"Move Better, Get Stronger",
+    lead:"พัฒนาการเคลื่อนไหวที่ใช้ได้จริงในชีวิตประจำวัน เพิ่มความฟิต ความแข็งแรง และความทนทานของร่างกาย",
+    focus:["สมรรถภาพโดยรวม","ความคล่องตัวและการทรงตัว","เผาผลาญพลังงานและหัวใจ","ความแข็งแรงที่ใช้งานได้จริง"],
+    equip:"5-Station Functional Circuit · 40s work / 20s rest × 2 rounds",
+    plan:[["0–5","รู้จัก Functional Training"],["5–12","Dynamic Warm-up & Movement Prep"],["12–40","Movement Skill Clinic (5 ท่า)"],["40–53","Functional Circuit Challenge"],["53–60","Cool-down & Q&A"]],
+    ex:[["Dumbbell Goblet Squat","ขาและการควบคุมลำตัว","40s / 20s"],["Step-up (Bench)","การทรงตัว ขาแต่ละข้าง","40s / 20s"],["Dumbbell Farmer Carry","Grip, Core, ท่าเดิน","40s / 20s"],["Plank Shoulder Tap","Core + Stability","40s / 20s"],["Jump + Step (Alternating)","ความฟิตและการประสานงาน","40s / 20s"]],
+    gets:["ความฟิตและความทนทานดีขึ้น","เคลื่อนไหวได้คล่องตัวในชีวิตประจำวัน","กล้ามเนื้อทำงานประสานกันดีขึ้น","ลดความเสี่ยงการบาดเจ็บ"] }
+];
+const byId = Object.fromEntries(CLASSES.map(c=>[c.id,c]));
+const REASONS = ["ติดงาน / ประชุม","ไม่สบาย / บาดเจ็บ","ติดธุระส่วนตัว","จองผิดคลาส"];
+
+
+/* ===== ตั้งค่า: วาง Web app URL จาก Apps Script ตรงนี้ ===== */
+const API_URL = "https://script.google.com/macros/s/AKfycbyypDzBxesw79gRuEhRD1jmsnHe8eCHCdXU0Z9UCLpdm2ypDhF6j_EoNOOkk_nz76UQ/exec";
+/* ========================================================== */
+
+const WAIT = 5;
+const CLOSE_TH = { c1:"วันจันทร์ที่ 2 พ.ย. 69 เวลา 17.30 น.", c2:"วันจันทร์ที่ 23 พ.ย. 69 เวลา 17.30 น.", c3:"วันจันทร์ที่ 7 ธ.ค. 69 เวลา 17.30 น." };
+const state = { emp:"", token:"", counts:null, mine:[], history:[], ready:false, view:"login", openDetail:null, loginStep:"emp", isNew:false, busy:false };
+const $ = s=>document.querySelector(s);
+const esc = s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const normEmp = s=>String(s||"").trim().toUpperCase().replace(/\s+/g,"");
+const validEmp = s=>/^[A-Z0-9_.\-]{2,15}$/.test(s);
+const fmt = iso=>{ if(!iso) return "-"; const d=new Date(iso); if(isNaN(d)) return String(iso); return d.toLocaleString("th-TH",{day:"numeric",month:"short",year:"2-digit",hour:"2-digit",minute:"2-digit",timeZone:"Asia/Bangkok"})+" น."; };
+const deadline = c=> new Date(c.start).getTime() - 24*3600*1000;
+const isClosed = c=> (state.counts?.[c.id]?.closed) || Date.now() >= deadline(c);
+const confirmedFor = cid=> state.counts?.[cid]?.confirmed ?? 0;
+const waitFor = cid=> state.counts?.[cid]?.wait ?? 0;
+const countFor = cid=> confirmedFor(cid)+waitFor(cid);
+const mineFor = ()=> state.mine || [];
+const fail = m=>Object.assign(new Error(m),{userMsg:m});
+
+function toast(msg){ const t=$("#toast"); t.textContent=msg; t.hidden=false; clearTimeout(toast._t); toast._t=setTimeout(()=>t.hidden=true,3000); }
+function banner(msg){ const bn=$("#db-banner"); bn.hidden=!msg; bn.textContent=msg||""; }
+
+async function api(action, data={}){
+  if(!/^https:\/\//.test(API_URL)) throw fail("ยังไม่ได้ตั้งค่า API_URL ในไฟล์ index.html");
+  let res;
+  try{ res = await fetch(API_URL,{method:"POST", body:JSON.stringify({action, ...data})}); }
+  catch(e){ throw fail("เชื่อมต่อระบบไม่ได้ ตรวจสอบอินเทอร์เน็ตแล้วลองใหม่"); }
+  let j; try{ j = await res.json(); }catch(e){ throw fail("ระบบตอบกลับผิดพลาด ลองใหม่อีกครั้ง"); }
+  if(!j.ok) throw fail(j.error || "ระบบขัดข้อง ลองใหม่อีกครั้ง");
+  return j;
+}
+function applyState(j){
+  state.counts=j.counts; state.ready=true;
+  if(j.mine) state.mine=j.mine;
+  if(j.history) state.history=j.history;
+  render();
+}
+async function refresh(){
+  try{
+    const j = await api("state", state.token?{empId:state.emp, token:state.token}:{});
+    banner(""); applyState(j);
+  }catch(e){
+    if(e.userMsg==="กรุณาเข้าสู่ระบบอีกครั้ง"){ logout("เซสชันหมดอายุ กรุณาเข้าสู่ระบบอีกครั้ง"); return; }
+    banner(e.userMsg || "โหลดข้อมูลไม่สำเร็จ");
+  }
+}
+
+/* ---------- login: employee ID + 4-digit PIN ---------- */
+try{ const s=JSON.parse(localStorage.getItem("skc_session")||"null"); if(s && validEmp(s.emp) && s.token){ state.emp=s.emp; state.token=s.token; } }catch(e){}
+function setLoginStep(step){
+  state.loginStep=step;
+  $("#step-emp").hidden = step!=="emp"; $("#step-pin").hidden = step!=="pin";
+  $("#login-err").hidden=true;
+  $("#login-btn").textContent = step==="emp" ? "ถัดไป" : (state.isNew ? "ตั้ง PIN และเข้าสู่ระบบ" : "เข้าสู่ระบบ");
+  if(step==="pin"){
+    $("#pin-emp").textContent = normEmp($("#login-emp").value);
+    $("#pin-label").textContent = state.isNew ? "ตั้ง PIN 4 หลัก" : "PIN 4 หลัก";
+    $("#pin-hint").textContent = state.isNew ? "ครั้งแรกของรหัสนี้ ตั้ง PIN ที่จำได้ ใช้ทุกครั้งที่เข้าระบบ อย่าบอกคนอื่น" : "ใส่ PIN ที่ตั้งไว้ ถ้าลืม PIN ติดต่อทีมแอดมินเพื่อรีเซ็ต";
+    $("#pin-confirm-wrap").hidden = !state.isNew;
+    $("#login-pin").value=""; $("#login-pin2").value="";
+    setTimeout(()=>$("#login-pin").focus(),0);
+  } else setTimeout(()=>$("#login-emp").focus(),0);
+}
+$("#pin-back").addEventListener("click",()=>setLoginStep("emp"));
+$("#login-form").addEventListener("submit",async e=>{
+  e.preventDefault();
+  if(state.busy) return;
+  const err=$("#login-err"), btn=$("#login-btn"), emp=normEmp($("#login-emp").value);
+  const show=m=>{ err.hidden=false; err.textContent=m; };
+  if(!validEmp(emp)){ show("รหัสพนักงานใช้ได้เฉพาะตัวอักษรอังกฤษและตัวเลข 2–15 ตัว"); return; }
+  const label=btn.textContent; state.busy=true; btn.disabled=true; btn.textContent="กำลังตรวจสอบ…";
+  try{
+    if(state.loginStep==="emp"){
+      const j = await api("check",{empId:emp});
+      state.isNew = !j.registered; setLoginStep("pin");
+    } else {
+      const pin=$("#login-pin").value.trim();
+      if(!/^\d{4}$/.test(pin)) throw fail("PIN ต้องเป็นตัวเลข 4 หลัก");
+      if(state.isNew && pin!==$("#login-pin2").value.trim()) throw fail("PIN ทั้ง 2 ช่องไม่ตรงกัน");
+      const j = await api("login",{empId:emp, pin});
+      state.emp=emp; state.token=j.token;
+      try{ localStorage.setItem("skc_session", JSON.stringify({emp, token:j.token})); }catch(e){}
+      setLoginStep("emp"); setView("home"); toast(j.created?"ตั้ง PIN แล้ว ยินดีต้อนรับ รหัส "+emp:"ยินดีต้อนรับ รหัส "+emp);
+      refresh();
+    }
+  }catch(ex){ show(ex.userMsg || "เข้าสู่ระบบไม่สำเร็จ ลองใหม่อีกครั้ง"); btn.textContent=label; }
+  state.busy=false; btn.disabled=false;
+  if(btn.textContent==="กำลังตรวจสอบ…") btn.textContent=label;
+});
+function logout(msg){
+  if(state.token) api("logout",{empId:state.emp, token:state.token}).catch(()=>{});
+  state.emp=""; state.token=""; state.mine=[]; state.history=[]; state.openDetail=null;
+  try{ localStorage.removeItem("skc_session"); }catch(e){}
+  $("#login-emp").value=""; setLoginStep("emp"); setView("login");
+  if(msg){ const err=$("#login-err"); err.hidden=false; err.textContent=msg; }
+}
+$("#logout").addEventListener("click",()=>logout());
+
+/* ---------- render ---------- */
+function statusOf(c){
+  const n=countFor(c.id), m = mineFor().find(x=>x.classId===c.id);
+  if(m) return m.wait ? ["st-few","คุณอยู่คิวสำรองลำดับที่ "+m.waitNo] : ["st-mine","คุณจองแล้ว"];
+  if(isClosed(c)) return ["st-closed","ปิดรับจองแล้ว"];
+  if(n>=CAP+WAIT) return ["st-full","เต็ม (รวมคิวสำรอง)"];
+  if(n>=CAP) return ["st-few","ที่นั่งเต็ม · คิวสำรองเหลือ "+(CAP+WAIT-n)];
+  if(CAP-n<=5) return ["st-few","เหลือ "+(CAP-n)+" ที่"];
+  return ["st-open","เปิดรับจอง"];
+}
+function renderClasses(){
+  $("#classes").innerHTML = CLASSES.map(c=>{
+    const n=countFor(c.id), conf=confirmedFor(c.id), w=waitFor(c.id), [stc,stt]=statusOf(c);
+    const m = mineFor().find(x=>x.classId===c.id);
+    const disabled = !state.ready || !state.token || m || isClosed(c) || n>=CAP+WAIT;
+    const label = m?(m.wait?"อยู่คิวสำรอง":"จองแล้ว"):isClosed(c)?"ปิดรับจอง":n>=CAP+WAIT?"เต็ม":n>=CAP?"จองคิวสำรอง":"จองคลาสนี้";
+    return `<article class="card${m?" mine":""}">
+      <div class="card-head">
+        <div class="date"><span class="d num">${c.day}</span><span class="m">${c.mon}</span><span class="t">17.30–18.30 น.</span></div>
+        <span class="tag">CLINIC #${c.no}</span>
+        <h3>${esc(c.title)}</h3>
+        <p class="sub">${esc(c.en)}</p>
+      </div>
+      <div class="card-body">
+        <span class="status ${stc}">${stt}</span>
+        <div>
+          <div class="cap-row"><span>ที่นั่งที่จองแล้ว</span><span><b class="num">${state.ready?conf:"–"}</b> / ${CAP}</span></div>
+          <div class="meter${conf>=CAP?" full":""}"><i style="width:${Math.min(100,conf/CAP*100)}%"></i></div>
+          ${conf>=CAP?`<div class="cap-row" style="margin-top:6px"><span>คิวสำรอง</span><span><b class="num" style="font-size:18px">${w}</b> / ${WAIT}</span></div>`:""}
+        </div>
+        <div class="chips">${c.focus.map(f=>`<span class="chip">${esc(f)}</span>`).join("")}</div>
+        <p class="note" style="margin:0">ปิดรับจองและยกเลิก ${esc(CLOSE_TH[c.id])}</p>
+        <div class="card-actions">
+          <button class="btn btn-ghost" data-detail="${c.id}" aria-expanded="${state.openDetail===c.id}">${state.openDetail===c.id?"ซ่อนรายละเอียด":"ดูรายละเอียด"}</button>
+          <button class="btn btn-accent" data-book="${c.id}" ${disabled?"disabled":""}>${label}</button>
+        </div>
+      </div>
+    </article>`;
+  }).join("");
+}
+function renderDetails(){
+  const c = byId[state.openDetail];
+  if(!c){ $("#details").innerHTML=""; return; }
+  $("#details").innerHTML = `<div class="details" id="detail-panel">
+    <div class="details-head">
+      <div><span class="tag">CLINIC #${c.no}</span> <span style="color:var(--muted);font-size:14px">${esc(c.dateTh)}</span>
+      <h3 style="margin-top:8px">${esc(c.title)}</h3><p class="lead">${esc(c.lead)}</p></div>
+      <button class="btn btn-ghost" data-detail="${c.id}">ปิด</button>
+    </div>
+    <div class="d-grid">
+      <div class="d-block">
+        <h4>60-Minute Workshop Plan</h4>
+        <div class="plan">${c.plan.map(p=>`<div><b>${p[0]} นาที</b>${esc(p[1])}</div>`).join("")}</div>
+        <h4 style="margin-top:18px">สิ่งที่จะได้รับ</h4>
+        <ul class="checks">${c.gets.map(g=>`<li>${esc(g)}</li>`).join("")}</ul>
+      </div>
+      <div class="d-block">
+        <h4>5 ท่าฝึก <span style="color:var(--muted);text-transform:none;letter-spacing:0">(${esc(c.equip)})</span></h4>
+        <ol class="ex">${c.ex.map((x,i)=>`<li><span class="n">${i+1}</span><span class="nm">${esc(x[0])}<span class="mu">${esc(x[1])}</span></span><span class="sets">${esc(x[2])}</span></li>`).join("")}</ol>
+        <p class="note">สถานที่: ฟิตเนสอาคารกีฬา · รับ ${CAP} คน + คิวสำรอง ${WAIT} คน · ปิดรับจองและยกเลิก ${esc(CLOSE_TH[c.id])}</p>
+      </div>
+    </div>
+  </div>`;
+}
+function renderMine(){
+  const el=$("#mine");
+  if(!state.emp){ el.innerHTML=""; return; }
+  const list = mineFor().slice().sort((a,b)=>byId[a.classId].start.localeCompare(byId[b.classId].start));
+  $("#mine-hi").textContent = "รหัสพนักงาน "+state.emp;
+  $("#mine-n").textContent = state.ready ? list.length : "–";
+  const open = CLASSES.length - list.length;
+  const tickets = list.map(b=>{const c=byId[b.classId]; return `
+    <div class="ticket">
+      <div class="row1"><span class="dd">${c.day}</span><span class="mm">${c.mon} · 17.30–18.30 น.</span>${b.wait?`<span class="ok wait">คิวสำรองที่ ${b.waitNo}</span>`:`<span class="ok">ยืนยันแล้ว</span>`}</div>
+      <div class="nm">Clinic #${c.no} ${esc(c.title)}</div>
+      <div class="meta">${esc(c.dateTh)}<br>ฟิตเนสอาคารกีฬา · จองเมื่อ ${fmt(b.bookedAt)}${b.wait?"<br>ถ้ามีคนยกเลิก ระบบจะเลื่อนคุณขึ้นเป็นผู้เข้าร่วมอัตโนมัติ":""}<br>ยกเลิกได้ถึง ${esc(CLOSE_TH[c.id])}</div>
+      <button class="btn btn-danger" data-cancel="${c.id}" ${isClosed(c)?"disabled":""}>${isClosed(c)?"ปิดรับยกเลิกแล้ว":b.wait?"ยกเลิกคิวสำรอง":"ยกเลิกการจอง"}</button>
+    </div>`;}).join("");
+  const slot = !state.ready ? `<div class="ticket slot">กำลังโหลดการจองของคุณ…</div>`
+    : open ? `<div class="ticket slot"><div><div class="plus">+${open}</div>${list.length?"ยังจองเพิ่มได้อีก "+open+" คลาส":"ยังไม่มีการจอง"}<br>เลือกคลาสด้านล่างแล้วกด “จองคลาสนี้”</div></div>` : "";
+  const past = (state.history||[]).slice().sort((a,b)=>String(b.cancelledAt).localeCompare(String(a.cancelledAt)));
+  el.innerHTML = `<div class="mine-list">${tickets}${slot}</div>`
+  + (past.length? `<details class="history"><summary>ประวัติการยกเลิกของฉัน (${past.length})</summary><ul>${past.map(x=>`<li>${fmt(x.cancelledAt)} · Clinic #${byId[x.classId]?.no||"?"} · ${esc(x.reason)}</li>`).join("")}</ul></details>`:"");
+}
+function render(){ renderClasses(); renderDetails(); renderMine(); }
+
+function setView(v){
+  if(!state.token && v!=="admin") v="login";
+  state.view=v;
+  $("#view-login").hidden = v!=="login"; $("#view-home").hidden = v!=="home"; $("#view-admin").hidden = v!=="admin";
+  $("#to-admin").hidden = v==="admin";
+  $("#userchip").hidden = !state.token; $("#chip-id").textContent = state.emp;
+  if(v==="admin") showAdmin(); else stopAdminPoll();
+  if(v==="login") setLoginStep(state.loginStep);
+  render(); window.scrollTo({top:0});
+}
+
+/* ---------- modals ---------- */
+function closeModal(){ $("#modal-root").innerHTML=""; }
+function openModal(html){ $("#modal-root").innerHTML=`<div class="scrim" id="scrim"><div class="modal" role="dialog" aria-modal="true">${html}</div></div>`;
+  $("#scrim").addEventListener("click",e=>{ if(e.target.id==="scrim"||e.target.closest("[data-close]")) closeModal(); }); }
+document.addEventListener("keydown",e=>{ if(e.key==="Escape") closeModal(); });
+
+function askBook(cid){
+  const c=byId[cid];
+  const wait = countFor(cid)>=CAP;
+  openModal(`<h3>${wait?"ยืนยันจองคิวสำรอง":"ยืนยันการจอง"}</h3>
+    <div class="sum">Clinic #${c.no} <b>${esc(c.title)}</b><br>${esc(c.dateTh)} · ฟิตเนสอาคารกีฬา<br>รหัสพนักงาน <b class="num" style="font-size:18px">${esc(state.emp)}</b></div>
+    ${wait?`<p class="note" style="margin:0">ที่นั่ง ${CAP} ที่เต็มแล้ว คุณจะได้คิวสำรอง ถ้ามีคนยกเลิกก่อน ${esc(CLOSE_TH[c.id])} ระบบจะเลื่อนคุณขึ้นเป็นผู้เข้าร่วมตามลำดับคิวอัตโนมัติ</p>`:""}
+    <p class="err" id="m-err" hidden></p>
+    <div class="row"><button class="btn btn-ghost" data-close>ยกเลิก</button><button class="btn btn-accent" id="m-ok">${wait?"ยืนยันจองคิวสำรอง":"ยืนยันการจอง"}</button></div>`);
+  $("#m-ok").addEventListener("click",()=>doBook(cid));
+}
+async function doBook(cid){
+  const btn=$("#m-ok"), err=$("#m-err"), label=btn.textContent; btn.disabled=true; btn.textContent="กำลังจอง…";
+  try{
+    const j = await api("book",{empId:state.emp, token:state.token, classId:cid});
+    applyState(j); closeModal();
+    const c=byId[cid];
+    toast(j.booked?.wait ? "จองคิวสำรอง Clinic #"+c.no+" ลำดับที่ "+j.booked.waitNo+" แล้ว" : "จอง Clinic #"+c.no+" เรียบร้อย");
+  }catch(e){
+    if(e.userMsg==="กรุณาเข้าสู่ระบบอีกครั้ง"){ closeModal(); logout("เซสชันหมดอายุ กรุณาเข้าสู่ระบบอีกครั้ง"); return; }
+    err.hidden=false; err.textContent = e.userMsg || "จองไม่สำเร็จ ลองใหม่อีกครั้ง"; btn.disabled=false; btn.textContent=label; refresh(); }
+}
+function askCancel(cid){
+  const c=byId[cid], m=mineFor().find(x=>x.classId===cid);
+  openModal(`<h3>${m?.wait?"ยกเลิกคิวสำรอง":"ยกเลิกการจอง"}</h3>
+    <div class="sum">Clinic #${c.no} <b>${esc(c.title)}</b><br>${esc(c.dateTh)} · รหัส <b>${esc(state.emp)}</b></div>
+    <div><strong>เหตุผลที่ยกเลิก</strong> <span style="color:var(--bad)">*</span></div>
+    <div class="reasons">${REASONS.map((r,i)=>`<label><input type="radio" name="rsn" id="rsn-${i}" value="${esc(r)}"> ${esc(r)}</label>`).join("")}
+      <label><input type="radio" name="rsn" id="rsn-other" value="other"> อื่น ๆ (ระบุ)</label></div>
+    <textarea id="rsn-text" maxlength="300" placeholder="รายละเอียดเพิ่มเติม (ต้องระบุถ้าเลือก “อื่น ๆ”)"></textarea>
+    <p class="err" id="m-err" hidden></p>
+    <div class="row"><button class="btn btn-ghost" data-close>กลับ</button><button class="btn btn-danger" id="m-ok">ยืนยันยกเลิก</button></div>`);
+  $("#m-ok").addEventListener("click",()=>doCancel(cid));
+}
+async function doCancel(cid){
+  const err=$("#m-err"), pick=document.querySelector('input[name="rsn"]:checked'), extra=$("#rsn-text").value.trim();
+  if(!pick){ err.hidden=false; err.textContent="กรุณาเลือกเหตุผลที่ยกเลิก"; return; }
+  if(pick.value==="other" && !extra){ err.hidden=false; err.textContent="กรุณาระบุเหตุผลในช่องข้อความ"; return; }
+  const reason = pick.value==="other" ? extra : (extra? pick.value+" – "+extra : pick.value);
+  const btn=$("#m-ok"); btn.disabled=true; btn.textContent="กำลังยกเลิก…";
+  try{
+    const j = await api("cancel",{empId:state.emp, token:state.token, classId:cid, reason});
+    applyState(j); closeModal(); toast("ยกเลิกแล้ว");
+  }catch(e){
+    if(e.userMsg==="กรุณาเข้าสู่ระบบอีกครั้ง"){ closeModal(); logout("เซสชันหมดอายุ กรุณาเข้าสู่ระบบอีกครั้ง"); return; }
+    err.hidden=false; err.textContent=e.userMsg || "ยกเลิกไม่สำเร็จ ลองใหม่อีกครั้ง"; btn.disabled=false; btn.textContent="ยืนยันยกเลิก"; }
+}
+
+document.addEventListener("click",e=>{
+  const d=e.target.closest("[data-detail]"); if(d){ state.openDetail = state.openDetail===d.dataset.detail?null:d.dataset.detail; render(); if(state.openDetail) $("#detail-panel")?.scrollIntoView({behavior:"smooth",block:"start"}); return; }
+  const b=e.target.closest("[data-book]"); if(b){ askBook(b.dataset.book); return; }
+  const c=e.target.closest("[data-cancel]"); if(c){ askCancel(c.dataset.cancel); return; }
+});
+
+/* ---------- admin: password checked by the server ---------- */
+let adminPw = ""; let adminData = null; let adminTimer = null;
+function showAdmin(){
+  $("#lock-form").hidden = !!adminPw; $("#admin-dash").hidden = !adminPw;
+  if(!adminPw){ $("#admin-pw").value=""; $("#lock-err").hidden=true; setTimeout(()=>$("#admin-pw").focus(),0); return; }
+  loadAdmin(); stopAdminPoll(); adminTimer=setInterval(loadAdmin,15000);
+}
+function stopAdminPoll(){ if(adminTimer){ clearInterval(adminTimer); adminTimer=null; } }
+async function loadAdmin(){
+  try{ adminData = await api("admin",{password:adminPw}); $("#admin-msg").hidden=true; $("#live").hidden=false; renderAdmin(); }
+  catch(e){ $("#live").hidden=true; const m=$("#admin-msg"); m.hidden=false; m.textContent=e.userMsg||"โหลดข้อมูลแอดมินไม่สำเร็จ"; }
+}
+$("#lock-form").addEventListener("submit",async e=>{
+  e.preventDefault();
+  const pw=$("#admin-pw").value, er=$("#lock-err"), btn=$("#lock-form button[type=submit]");
+  btn.disabled=true; btn.textContent="กำลังตรวจสอบ…";
+  try{ adminData = await api("admin",{password:pw}); adminPw=pw; showAdmin(); }
+  catch(ex){ er.hidden=false; er.textContent=ex.userMsg||"เข้าไม่สำเร็จ"; }
+  btn.disabled=false; btn.textContent="เข้าดูข้อมูล";
+});
+$("#lock-back").addEventListener("click",()=>setView(state.token?"home":"login"));
+$("#admin-exit").addEventListener("click",()=>{ adminPw=""; adminData=null; stopAdminPoll(); setView(state.token?"home":"login"); });
+$("#to-admin").addEventListener("click",()=>setView("admin"));
+$("#admin-search").addEventListener("input",()=>renderAdmin());
+$("#unbind-form").addEventListener("submit",async e=>{
+  e.preventDefault();
+  const emp=normEmp($("#unbind-emp").value), out=$("#unbind-msg"), btn=$("#unbind-form button");
+  out.hidden=false;
+  if(!validEmp(emp)){ out.textContent="กรอกรหัสพนักงานให้ถูกต้อง"; return; }
+  btn.disabled=true;
+  try{ const j=await api("adminResetPin",{password:adminPw, empId:emp}); out.textContent=j.message; $("#unbind-emp").value=""; loadAdmin(); }
+  catch(ex){ out.textContent=ex.userMsg||"รีเซ็ตไม่สำเร็จ"; }
+  btn.disabled=false;
+});
+function renderAdmin(){
+  if(state.view!=="admin" || !adminData) return;
+  const q = normEmp($("#admin-search").value), d=adminData;
+  const cls = cid=> byId[cid] ? `#${byId[cid].no} ${byId[cid].title}` : cid;
+  const people=new Set(d.classes.flatMap(c=>[...c.confirmed,...c.waitlist].map(a=>a.empId))).size;
+  const total=d.classes.reduce((s,c)=>s+c.confirmed.length+c.waitlist.length,0);
+  $("#kpis").innerHTML = d.classes.map(k=>{ const c=byId[k.id]; return `<div class="kpi"><small>Clinic #${c.no} · ${c.day} ${c.mon}</small><b class="num">${k.confirmed.length}<span> / ${CAP}</span></b><small>คิวสำรอง ${k.waitlist.length} / ${WAIT}</small></div>`; }).join("")
+    + `<div class="kpi"><small>รวมทุกคลาส · ${people} คน · ยกเลิก ${d.cancels.length} ครั้ง</small><b class="num">${total}<span> / ${(CAP+WAIT)*3}</span></b><small>นับรวมคิวสำรอง</small></div>`;
+  const li = a=>`<li><span><span class="ts">${a.n}.</span> <span class="id">${esc(a.empId)}</span></span><span class="ts">${fmt(a.at)}</span></li>`;
+  $("#admin-cols").innerHTML = d.classes.map(k=>{
+    const c=byId[k.id];
+    const conf = k.confirmed.map((a,i)=>({...a,n:i+1})).filter(a=>!q||String(a.empId).includes(q));
+    const wl = k.waitlist.map((a,i)=>({...a,n:i+1})).filter(a=>!q||String(a.empId).includes(q));
+    return `<div class="acol"><h4>Clinic #${c.no} ${esc(c.title)}</h4><div class="when">${esc(c.dateTh)}<br>ปิดรับ ${esc(CLOSE_TH[c.id])}</div>
+      <div class="cnt num">${k.confirmed.length} / ${CAP}</div>
+      ${conf.length?`<ol class="idlist">${conf.map(li).join("")}</ol>`:`<div class="empty" style="padding:12px;margin-top:8px">${q?"ไม่พบรหัสนี้":"ยังไม่มีผู้จอง"}</div>`}
+      <div class="when" style="margin-top:10px;font-weight:600;color:var(--warn)">คิวสำรอง ${k.waitlist.length} / ${WAIT}</div>
+      ${wl.length?`<ol class="idlist">${wl.map(li).join("")}</ol>`:""}
+    </div>`;
+  }).join("");
+  const cx = d.cancels.filter(x=>!q||String(x.empId).includes(q));
+  $("#cx-count").textContent = d.cancels.length+" รายการ";
+  $("#cx-body").innerHTML = cx.length? cx.map(x=>`<tr><td>${fmt(x.at)}</td><td class="id">${esc(x.empId)}</td><td>${esc(cls(x.classId))}${x.waitlist?" (คิวสำรอง)":""}</td><td>${esc(x.reason)}</td></tr>`).join("") : `<tr><td colspan="4" style="color:var(--muted)">ยังไม่มีการยกเลิก</td></tr>`;
+  const lg = d.log.filter(x=>!q||String(x.empId).includes(q));
+  $("#log-count").textContent = d.log.length+" รายการ";
+  $("#log-body").innerHTML = lg.length? lg.map(x=>`<tr><td>${fmt(x.at)}</td><td><span class="pill ${x.type}">${x.type==="book"?(x.waitlist?"จองคิวสำรอง":"จอง"):"ยกเลิก"}</span></td><td class="id">${esc(x.empId)}</td><td>${esc(cls(x.classId))}</td></tr>`).join("") : `<tr><td colspan="4" style="color:var(--muted)">ยังไม่มีข้อมูล</td></tr>`;
+  $("#reg-count").textContent = d.users+" รหัสลงทะเบียนแล้ว";
+}
+
+/* ---------- boot ---------- */
+setView(state.token ? "home" : "login");
+refresh();
+setInterval(()=>{ if(document.visibilityState==="visible" && state.view==="home") refresh(); }, 20000);
+document.addEventListener("visibilitychange",()=>{ if(document.visibilityState==="visible" && state.view==="home") refresh(); });
+</script>
+</body>
+</html>
