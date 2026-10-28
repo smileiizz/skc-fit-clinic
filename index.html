@@ -404,7 +404,7 @@ const REASONS = ["ติดงาน / ประชุม","ไม่สบา�
 
 
 /* ===== ตั้งค่า: วาง Web app URL จาก Apps Script ตรงนี้ ===== */
-const API_URL = "https://script.google.com/macros/s/AKfycbyypDzBxesw79gRuEhRD1jmsnHe8eCHCdXU0Z9UCLpdm2ypDhF6j_EoNOOkk_nz76UQ/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbw8HoEcz3TA5emCyFBCks4YYZECFvZKTMtqP7JVzmzU33gTblHVa9l1glJxYCNo6WYp/exec";
 /* ========================================================== */
 
 const WAIT = 5;
@@ -416,7 +416,8 @@ const OPEN_DAYS = 7;
 const OPEN_TH = { c1:"วันอังคารที่ 27 ต.ค. 69 เวลา 00.00 น.", c2:"วันอังคารที่ 17 พ.ย. 69 เวลา 00.00 น.", c3:"วันอังคารที่ 1 ธ.ค. 69 เวลา 00.00 น." };
 const OPEN_SHORT = { c1:"27 ต.ค.", c2:"17 พ.ย.", c3:"1 ธ.ค." };
 const openAt = c=> new Date(c.start.slice(0,10)+"T00:00:00+07:00").getTime() - OPEN_DAYS*86400000;
-const notOpen = c=> state.counts?.[c.id] ? !!state.counts[c.id].notOpen && Date.now()<openAt(c) : Date.now()<openAt(c);
+const notOpen = c=> Date.now() < openAt(c) || !!state.counts?.[c.id]?.notOpen;
+const ended = c=> Date.now() >= new Date(c.start).getTime() + 60*60*1000; /* หลังคลาสจบ 18.30 น. ซ่อนจากหน้า Home */
 const CI_DAY_TH = { c1:"วันอังคารที่ 3 พ.ย. 69", c2:"วันอังคารที่ 24 พ.ย. 69", c3:"วันอังคารที่ 8 ธ.ค. 69" };
 const ciOpen = c=> new Date(c.start.slice(0,10)+"T"+CHECKIN_FROM+":00+07:00").getTime();
 const ciClose = c=> new Date(c.start.slice(0,10)+"T"+CHECKIN_UNTIL+":00+07:00").getTime();
@@ -527,7 +528,9 @@ function statusOf(c){
   return ["st-open","เปิดรับจอง"];
 }
 function renderClasses(){
-  $("#classes").innerHTML = CLASSES.map(c=>{
+  const shown = CLASSES.filter(c=>!ended(c));
+  if(!shown.length){ $("#classes").innerHTML = `<div class="empty" style="grid-column:1/-1">Training Clinic Series จบครบทั้ง 3 คลาสแล้ว ขอบคุณที่ร่วมฝึกกับ SKC FIT CLUB</div>`; return; }
+  $("#classes").innerHTML = shown.map(c=>{
     const n=countFor(c.id), conf=confirmedFor(c.id), w=waitFor(c.id), [stc,stt]=statusOf(c);
     const m = mineFor().find(x=>x.classId===c.id);
     const soon = !m && notOpen(c);
@@ -585,7 +588,7 @@ function renderDetails(){
 function renderMine(){
   const el=$("#mine");
   if(!state.emp){ el.innerHTML=""; return; }
-  const list = mineFor().slice().sort((a,b)=>byId[a.classId].start.localeCompare(byId[b.classId].start));
+  const list = mineFor().filter(b=>!ended(byId[b.classId])).slice().sort((a,b)=>byId[a.classId].start.localeCompare(byId[b.classId].start));
   $("#mine-hi").textContent = "รหัสพนักงาน "+state.emp;
   const open = CLASSES.length - list.length;
   const tickets = list.map(b=>{const c=byId[b.classId], ph=ciPhase(c), done=!!b.checkedInAt;
@@ -609,7 +612,7 @@ function renderMine(){
   const due = list.filter(b=>!b.checkedInAt && ciPhase(byId[b.classId])==="open");
   const alert = due.length ? `<div class="ci-alert">⏰ วันนี้มีคลาส <b>Clinic #${due.map(b=>byId[b.classId].no).join(", #")}</b> กด Check-in ก่อน ${CHECKIN_UNTIL.replace(":",".")} น. ไม่งั้นสิทธิ์จะหลุด</div>` : "";
   const slot = !state.ready ? `<div class="ticket slot">กำลังโหลดการจองของคุณ…</div>`
-    : open && !list.length ? (()=>{ const rest=CLASSES.filter(c=>!list.some(b=>b.classId===c.id) && !isClosed(c));
+    : open && !list.length ? (()=>{ const rest=CLASSES.filter(c=>!ended(c) && !list.some(b=>b.classId===c.id) && !isClosed(c));
         const now=rest.filter(c=>!notOpen(c)), later=rest.filter(c=>notOpen(c));
         const msg = now.length ? "เลือกคลาสด้านล่างแล้วกด “จองคลาสนี้”" : later.length ? "คลาสถัดไปยังไม่เปิดให้จอง" : "ไม่มีคลาสที่เปิดรับจองแล้ว";
         return `<div class="ticket slot"><div>${list.length?"จองคลาสอื่นเพิ่มได้":"ยังไม่มีการจอง"}<br>${msg}</div></div>`; })() : "";
