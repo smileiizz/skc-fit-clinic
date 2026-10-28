@@ -85,6 +85,12 @@ h2.sec small{font-family:var(--f-body);font-style:normal;text-transform:none;fon
 .classes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
 .card{background:var(--panel);border:1px solid var(--line);border-radius:16px;overflow:hidden;display:flex;flex-direction:column}
 .card.mine{border-color:var(--accent)}
+.card.soon{filter:grayscale(1);opacity:.6;border-style:dashed}
+.card.soon:hover{opacity:.8}
+.card.soon .card-head{background:var(--panel)}
+.soon-box{border:1px dashed var(--line);border-radius:10px;padding:10px 12px;font-size:13px;line-height:1.5;color:var(--muted);text-align:center}
+.soon-box b{color:var(--fg)}
+.st-soon{background:color-mix(in srgb,var(--muted) 20%,transparent);color:var(--muted)}
 .card-head{padding:16px 16px 14px;background:linear-gradient(160deg,color-mix(in srgb,var(--accent) 22%,var(--panel)) 0,var(--panel) 70%);border-bottom:1px solid var(--line)}
 .date{display:flex;align-items:baseline;gap:10px}
 .date .d{font-family:var(--f-num);font-weight:800;font-size:46px;line-height:.9;color:var(--accent)}
@@ -151,6 +157,21 @@ h2.sec small{font-family:var(--f-body);font-style:normal;text-transform:none;fon
 .ticket .nm{font-family:var(--f-display);font-weight:800;font-style:italic;text-transform:uppercase;font-size:18px;line-height:1.1}
 .ticket .meta{font-size:13px;color:#a59c93}
 .ticket .btn{margin-top:auto}
+.ticket .acts{margin-top:auto;display:grid;gap:8px}
+.ticket .acts .btn{margin-top:0}
+.ticket .ok.ci{background:var(--accent);color:var(--accent-ink)}
+.ticket .ok.todo{background:color-mix(in srgb,var(--bad) 22%,transparent);color:#ff8a8a}
+.ci-box{border-radius:10px;padding:10px 12px;font-size:13px;line-height:1.45;background:#1f1c19;color:#f4efe9;border:1px solid #2e2925}
+.ci-box b{color:var(--accent-2)}
+.ci-box.done{border-color:color-mix(in srgb,var(--ok) 45%,transparent)}
+.ci-box.done b{color:var(--ok)}
+.ci-box.now{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 16%,#0c0b0a)}
+.btn-ci{background:var(--accent);color:var(--accent-ink);font-size:16px;padding:12px 16px;font-weight:800}
+.btn-ci:hover{background:var(--accent-2)}
+.ci-alert{background:#0c0b0a;color:#f4efe9;border-radius:12px;padding:12px 14px;margin-bottom:14px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-weight:600}
+.ci-alert b{color:var(--accent-2)}
+.idlist .ci-mark{font-size:11px;font-weight:700;border-radius:99px;padding:1px 7px;margin-left:6px;background:color-mix(in srgb,var(--ok) 20%,transparent);color:var(--ok)}
+.idlist .ci-mark.no{background:color-mix(in srgb,var(--muted) 18%,transparent);color:var(--muted)}
 .ticket.slot{background:rgba(12,11,10,.14);border:2px dashed rgba(26,13,3,.35);color:var(--accent-ink);justify-content:center;align-items:center;text-align:center;min-height:150px;font-weight:600;font-size:14px}
 .ticket.slot .plus{font-family:var(--f-num);font-weight:800;font-size:34px;line-height:1}
 .mine-panel .history{margin-top:14px;font-size:13px;color:var(--accent-ink)}
@@ -173,7 +194,7 @@ h2.sec small{font-family:var(--f-body);font-style:normal;text-transform:none;fon
 .acol .when{font-size:12px;color:var(--muted)}
 .acol .cnt{font-family:var(--f-num);font-size:28px;font-weight:800;color:var(--accent);margin:4px 0}
 .idlist{list-style:none;margin:8px 0 0;padding:0;display:grid;gap:4px;max-height:420px;overflow:auto}
-.idlist li{display:flex;justify-content:space-between;gap:8px;background:var(--panel-2);border-radius:6px;padding:5px 8px;font-size:13px}
+.idlist li{display:flex;justify-content:space-between;align-items:center;gap:8px;background:var(--panel-2);border-radius:6px;padding:5px 8px;font-size:13px}
 .idlist .id{font-family:var(--f-num);font-weight:700;font-size:16px;letter-spacing:.04em}
 .idlist .ts{color:var(--muted);font-size:12px;font-variant-numeric:tabular-nums}
 .tbl-wrap{overflow-x:auto;background:var(--panel);border:1px solid var(--line);border-radius:12px;margin-top:8px}
@@ -188,6 +209,11 @@ h2.sec small{font-family:var(--f-body);font-style:normal;text-transform:none;fon
 .pill{display:inline-block;border-radius:99px;padding:1px 9px;font-size:12px;font-weight:600}
 .pill.book{background:color-mix(in srgb,var(--ok) 18%,transparent);color:var(--ok)}
 .pill.cancel{background:color-mix(in srgb,var(--bad) 18%,transparent);color:var(--bad)}
+.adm-x{background:transparent;border:1px solid color-mix(in srgb,var(--bad) 55%,transparent);color:var(--bad);border-radius:6px;font-size:11px;padding:2px 7px;cursor:pointer;white-space:nowrap}
+.adm-x:hover{background:color-mix(in srgb,var(--bad) 15%,transparent)}
+.idlist .rt{display:flex;align-items:center;gap:8px}
+.pill.checkin{background:color-mix(in srgb,var(--accent) 22%,transparent);color:var(--accent-2)}
+.pill.noshow{background:color-mix(in srgb,var(--warn) 18%,transparent);color:var(--warn)}
 table{border-collapse:collapse;width:100%;min-width:640px;font-size:14px}
 th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
 th{font-family:var(--f-display);font-weight:600;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
@@ -248,9 +274,9 @@ img{max-width:100%}
       <div class="login-top">
         <div class="eyebrow">SKC FIT CLUB · Training Clinic Series</div>
         <h1>ลงทะเบียน<br>เข้าจองคลาส</h1>
-        <p>3 คลินิก 3 เป้าหมาย รับคลาสละ 20 คน · ฟิตเนสอาคารกีฬา</p>
+        <p>3 คลินิก 3 เป้าหมาย รับคลาสละ 10 คน · ฟิตเนสอาคารกีฬา</p>
         <div class="login-dates"><span>3 พ.ย. 69</span><span>24 พ.ย. 69</span><span>8 ธ.ค. 69</span></div>
-        <p style="margin-top:8px">ทุกคลาสเวลา 17.30–18.30 น.</p>
+        <p style="margin-top:8px">ทุกคลาสเวลา 17.30–18.30 น. · ต้อง Check-in วันคลาส ก่อน 13.00 น.</p>
       </div>
       <form class="login-form" id="login-form" autocomplete="off" novalidate>
         <div id="step-emp" class="step">
@@ -279,7 +305,7 @@ img{max-width:100%}
     <div class="hero">
       <div>
         <h1>Training Clinic <span>Series</span></h1>
-        <p>3 คลินิก 3 เป้าหมาย เรียนรู้เทคนิค ฝึกจริง และนำไปใช้ได้จริง สอนโดยทีม SKC FIT CLUB รับคลาสละ 20 คน 1 คนสามารถจองได้มากกว่า 1 คลาส</p>
+        <p>3 คลินิก 3 เป้าหมาย เรียนรู้เทคนิค ฝึกจริง และนำไปใช้ได้จริง สอนโดยทีม SKC FIT CLUB รับคลาสละ 10 คน 1 คนสามารถจองได้มากกว่า 1 คลาส · เปิดจองก่อนวันคลาส 7 วัน · จองแล้วต้องกด Check-in ในวันคลาส ก่อน 13.00 น.</p>
       </div>
       <div class="facts">
         <div class="fact"><small>สถานที่</small><strong>ฟิตเนสอาคารกีฬา</strong></div>
@@ -289,7 +315,6 @@ img{max-width:100%}
     <section class="mine-panel" aria-labelledby="mine-title">
       <div class="mine-head">
         <div><div class="hi" id="mine-hi"></div><h2 id="mine-title">การจองของฉัน</h2></div>
-        <div class="mine-count"><b id="mine-n">0</b><span> / 3</span><small>คลาสที่จองไว้</small></div>
       </div>
       <div id="mine"></div>
     </section>
@@ -312,7 +337,7 @@ img{max-width:100%}
     <div id="admin-dash" hidden>
       <div class="hero" style="padding-bottom:12px">
         <div><h1>Back <span>Office</span></h1>
-        <p>ยอดจอง รายชื่อรหัสพนักงาน และเหตุผลการยกเลิก <span class="live" id="live">อัปเดตทุก 15 วินาที</span></p></div>
+        <p>ยอดจอง รายชื่อรหัสพนักงาน และเหตุผลการยกเลิก <span class="live" id="live">อัปเดตทุก 30 วินาที</span></p></div>
         <div class="facts"><button class="btn btn-ghost" id="admin-exit">ออกจากหน้าแอดมิน</button></div>
       </div>
       <div id="admin-msg" class="banner" hidden></div>
@@ -347,7 +372,7 @@ img{max-width:100%}
 <div id="toast" class="toast" hidden></div>
 
 <script>
-const CAP = 20;
+const CAP = 10;
 const CLASSES = [
   { id:"c1", no:"01", day:"3", mon:"พ.ย. 69", dateTh:"วันอังคารที่ 3 พฤศจิกายน 2569 เวลา 17.30–18.30 น.", start:"2026-11-03T17:30:00+07:00",
     title:"Glutes & Legs Builder", en:"Build a Stronger Lower Body",
@@ -383,14 +408,27 @@ const API_URL = "https://script.google.com/macros/s/AKfycbyypDzBxesw79gRuEhRD1jm
 /* ========================================================== */
 
 const WAIT = 5;
-const CLOSE_TH = { c1:"วันจันทร์ที่ 2 พ.ย. 69 เวลา 17.30 น.", c2:"วันจันทร์ที่ 23 พ.ย. 69 เวลา 17.30 น.", c3:"วันจันทร์ที่ 7 ธ.ค. 69 เวลา 17.30 น." };
+const CLOSE_TH = { c1:"วันอังคารที่ 3 พ.ย. 69 เวลา 13.00 น.", c2:"วันอังคารที่ 24 พ.ย. 69 เวลา 13.00 น.", c3:"วันอังคารที่ 8 ธ.ค. 69 เวลา 13.00 น." };
+const CHECKIN_FROM = "00:00", CHECKIN_UNTIL = "13:00";
+const CANCEL_TH = { c1:"วันอังคารที่ 3 พ.ย. 69 เวลา 13.00 น.", c2:"วันอังคารที่ 24 พ.ย. 69 เวลา 13.00 น.", c3:"วันอังคารที่ 8 ธ.ค. 69 เวลา 13.00 น." };
+const cancelClosed = c=> Date.now() >= new Date(c.start.slice(0,10)+"T"+CHECKIN_UNTIL+":00+07:00").getTime();
+const OPEN_DAYS = 7;
+const OPEN_TH = { c1:"วันอังคารที่ 27 ต.ค. 69 เวลา 00.00 น.", c2:"วันอังคารที่ 17 พ.ย. 69 เวลา 00.00 น.", c3:"วันอังคารที่ 1 ธ.ค. 69 เวลา 00.00 น." };
+const OPEN_SHORT = { c1:"27 ต.ค.", c2:"17 พ.ย.", c3:"1 ธ.ค." };
+const openAt = c=> new Date(c.start.slice(0,10)+"T00:00:00+07:00").getTime() - OPEN_DAYS*86400000;
+const notOpen = c=> state.counts?.[c.id] ? !!state.counts[c.id].notOpen && Date.now()<openAt(c) : Date.now()<openAt(c);
+const CI_DAY_TH = { c1:"วันอังคารที่ 3 พ.ย. 69", c2:"วันอังคารที่ 24 พ.ย. 69", c3:"วันอังคารที่ 8 ธ.ค. 69" };
+const ciOpen = c=> new Date(c.start.slice(0,10)+"T"+CHECKIN_FROM+":00+07:00").getTime();
+const ciClose = c=> new Date(c.start.slice(0,10)+"T"+CHECKIN_UNTIL+":00+07:00").getTime();
+const ciPhase = c=>{ const n=Date.now(); return n<ciOpen(c)?"before":n<ciClose(c)?"open":"after"; };
+const ciLeft = c=>{ const m=Math.max(0,Math.round((ciClose(c)-Date.now())/60000)); return m>=60?Math.floor(m/60)+" ชม. "+(m%60)+" นาที":m+" นาที"; };
 const state = { emp:"", token:"", counts:null, mine:[], history:[], ready:false, view:"login", openDetail:null, loginStep:"emp", isNew:false, busy:false };
 const $ = s=>document.querySelector(s);
 const esc = s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const normEmp = s=>String(s||"").trim().toUpperCase().replace(/\s+/g,"");
 const validEmp = s=>/^[A-Z0-9_.\-]{2,15}$/.test(s);
 const fmt = iso=>{ if(!iso) return "-"; const d=new Date(iso); if(isNaN(d)) return String(iso); return d.toLocaleString("th-TH",{day:"numeric",month:"short",year:"2-digit",hour:"2-digit",minute:"2-digit",timeZone:"Asia/Bangkok"})+" น."; };
-const deadline = c=> new Date(c.start).getTime() - 24*3600*1000;
+const deadline = c=> new Date(c.start.slice(0,10)+"T13:00:00+07:00").getTime();
 const isClosed = c=> (state.counts?.[c.id]?.closed) || Date.now() >= deadline(c);
 const confirmedFor = cid=> state.counts?.[cid]?.confirmed ?? 0;
 const waitFor = cid=> state.counts?.[cid]?.wait ?? 0;
@@ -481,6 +519,7 @@ $("#logout").addEventListener("click",()=>logout());
 function statusOf(c){
   const n=countFor(c.id), m = mineFor().find(x=>x.classId===c.id);
   if(m) return m.wait ? ["st-few","คุณอยู่คิวสำรองลำดับที่ "+m.waitNo] : ["st-mine","คุณจองแล้ว"];
+  if(notOpen(c)) return ["st-soon","เปิดจอง "+OPEN_SHORT[c.id]];
   if(isClosed(c)) return ["st-closed","ปิดรับจองแล้ว"];
   if(n>=CAP+WAIT) return ["st-full","เต็ม (รวมคิวสำรอง)"];
   if(n>=CAP) return ["st-few","ที่นั่งเต็ม · คิวสำรองเหลือ "+(CAP+WAIT-n)];
@@ -491,9 +530,10 @@ function renderClasses(){
   $("#classes").innerHTML = CLASSES.map(c=>{
     const n=countFor(c.id), conf=confirmedFor(c.id), w=waitFor(c.id), [stc,stt]=statusOf(c);
     const m = mineFor().find(x=>x.classId===c.id);
-    const disabled = !state.ready || !state.token || m || isClosed(c) || n>=CAP+WAIT;
-    const label = m?(m.wait?"อยู่คิวสำรอง":"จองแล้ว"):isClosed(c)?"ปิดรับจอง":n>=CAP+WAIT?"เต็ม":n>=CAP?"จองคิวสำรอง":"จองคลาสนี้";
-    return `<article class="card${m?" mine":""}">
+    const soon = !m && notOpen(c);
+    const disabled = !state.ready || !state.token || m || soon || isClosed(c) || n>=CAP+WAIT;
+    const label = m?(m.wait?"อยู่คิวสำรอง":"จองแล้ว"):soon?"เปิดจอง "+OPEN_SHORT[c.id]:isClosed(c)?"ปิดรับจอง":n>=CAP+WAIT?"เต็ม":n>=CAP?"จองคิวสำรอง":"จองคลาสนี้";
+    return `<article class="card${m?" mine":""}${soon?" soon":""}">
       <div class="card-head">
         <div class="date"><span class="d num">${c.day}</span><span class="m">${c.mon}</span><span class="t">17.30–18.30 น.</span></div>
         <span class="tag">CLINIC #${c.no}</span>
@@ -502,13 +542,14 @@ function renderClasses(){
       </div>
       <div class="card-body">
         <span class="status ${stc}">${stt}</span>
+        ${soon?`<div class="soon-box">ยังไม่เปิดให้จอง<br><b>เปิดจอง ${esc(OPEN_TH[c.id])}</b><br>(ก่อนวันคลาส ${OPEN_DAYS} วัน)</div>`:""}
         <div>
           <div class="cap-row"><span>ที่นั่งที่จองแล้ว</span><span><b class="num">${state.ready?conf:"–"}</b> / ${CAP}</span></div>
           <div class="meter${conf>=CAP?" full":""}"><i style="width:${Math.min(100,conf/CAP*100)}%"></i></div>
           ${conf>=CAP?`<div class="cap-row" style="margin-top:6px"><span>คิวสำรอง</span><span><b class="num" style="font-size:18px">${w}</b> / ${WAIT}</span></div>`:""}
         </div>
         <div class="chips">${c.focus.map(f=>`<span class="chip">${esc(f)}</span>`).join("")}</div>
-        <p class="note" style="margin:0">ปิดรับจองและยกเลิก ${esc(CLOSE_TH[c.id])}</p>
+        <p class="note" style="margin:0">จอง ยกเลิก และ Check-in ได้ถึง ${esc(CANCEL_TH[c.id])}</p>
         <div class="card-actions">
           <button class="btn btn-ghost" data-detail="${c.id}" aria-expanded="${state.openDetail===c.id}">${state.openDetail===c.id?"ซ่อนรายละเอียด":"ดูรายละเอียด"}</button>
           <button class="btn btn-accent" data-book="${c.id}" ${disabled?"disabled":""}>${label}</button>
@@ -536,7 +577,7 @@ function renderDetails(){
       <div class="d-block">
         <h4>5 ท่าฝึก <span style="color:var(--muted);text-transform:none;letter-spacing:0">(${esc(c.equip)})</span></h4>
         <ol class="ex">${c.ex.map((x,i)=>`<li><span class="n">${i+1}</span><span class="nm">${esc(x[0])}<span class="mu">${esc(x[1])}</span></span><span class="sets">${esc(x[2])}</span></li>`).join("")}</ol>
-        <p class="note">สถานที่: ฟิตเนสอาคารกีฬา · รับ ${CAP} คน + คิวสำรอง ${WAIT} คน · ปิดรับจองและยกเลิก ${esc(CLOSE_TH[c.id])}</p>
+        <p class="note">สถานที่: ฟิตเนสอาคารกีฬา · รับ ${CAP} คน + คิวสำรอง ${WAIT} คน · เปิดจอง ${esc(OPEN_TH[c.id])} · จองและยกเลิกได้ถึง ${esc(CANCEL_TH[c.id])} · ต้อง Check-in ${esc(CI_DAY_TH[c.id])} ก่อน 13.00 น. ไม่งั้นสิทธิ์จะหลุด</p>
       </div>
     </div>
   </div>`;
@@ -546,20 +587,35 @@ function renderMine(){
   if(!state.emp){ el.innerHTML=""; return; }
   const list = mineFor().slice().sort((a,b)=>byId[a.classId].start.localeCompare(byId[b.classId].start));
   $("#mine-hi").textContent = "รหัสพนักงาน "+state.emp;
-  $("#mine-n").textContent = state.ready ? list.length : "–";
   const open = CLASSES.length - list.length;
-  const tickets = list.map(b=>{const c=byId[b.classId]; return `
+  const tickets = list.map(b=>{const c=byId[b.classId], ph=ciPhase(c), done=!!b.checkedInAt;
+    const badge = done ? `<span class="ok ci">Check-in แล้ว</span>` : b.wait ? `<span class="ok wait">คิวสำรองที่ ${b.waitNo}</span>` : ph==="open" ? `<span class="ok todo">รอ Check-in</span>` : `<span class="ok">ได้ที่นั่ง</span>`;
+    const ciBox = done
+      ? `<div class="ci-box done"><b>✓ Check-in แล้ว</b> เมื่อ ${fmt(b.checkedInAt)}${b.wait?(ph==="after"?"<br>ที่นั่งเต็มแล้ว คุณยังอยู่คิวสำรองที่ "+b.waitNo+" ถ้ามีที่ว่างหน้างาน ทีมงานจะแจ้งให้ทราบ":"<br>ยังอยู่คิวสำรองที่ "+b.waitNo+" ถ้ามีที่ว่างภายใน 13.00 น. ระบบจะเลื่อนคุณขึ้นอัตโนมัติ"):"<br>ยืนยันเข้าร่วมเรียบร้อย เจอกันที่ฟิตเนสอาคารกีฬา 17.30 น."}</div>`
+      : ph==="before"
+      ? `<div class="ci-box">ต้องกด <b>Check-in</b> ${esc(CI_DAY_TH[c.id])} ระหว่าง ${CHECKIN_FROM.replace(":",".")}–${CHECKIN_UNTIL.replace(":",".")} น. เพื่อยืนยันว่าเข้าร่วมแน่นอน ถ้าไม่กด สิทธิ์จะหลุด</div>`
+      : `<div class="ci-box now"><b>วันนี้ต้อง Check-in ก่อน ${CHECKIN_UNTIL.replace(":",".")} น.</b> (เหลือ ${ciLeft(c)}) ถ้าไม่กด สิทธิ์${b.wait?"คิวสำรอง":"ที่นั่ง"}จะหลุด</div>`;
+    const ciBtn = !done && ph==="open" ? `<button class="btn btn-ci" data-checkin="${c.id}">Check-in ยืนยันเข้าร่วม</button>`
+      : !done && ph==="before" ? `<button class="btn btn-ghost" disabled>Check-in เปิด ${esc(CI_DAY_TH[c.id].replace("วันอังคารที่ ",""))} 00.00 น.</button>` : "";
+    const cxBtn = cancelClosed(c) ? "" : done ? `<button class="btn btn-ghost" disabled title="Check-in แล้ว ยกเลิกไม่ได้">ยกเลิกไม่ได้ (Check-in แล้ว)</button>` : `<button class="btn btn-danger" data-cancel="${c.id}">${b.wait?"ยกเลิกคิวสำรอง":"ยกเลิกการจอง"}</button>`;
+    return `
     <div class="ticket">
-      <div class="row1"><span class="dd">${c.day}</span><span class="mm">${c.mon} · 17.30–18.30 น.</span>${b.wait?`<span class="ok wait">คิวสำรองที่ ${b.waitNo}</span>`:`<span class="ok">ยืนยันแล้ว</span>`}</div>
+      <div class="row1"><span class="dd">${c.day}</span><span class="mm">${c.mon} · 17.30–18.30 น.</span>${badge}</div>
       <div class="nm">Clinic #${c.no} ${esc(c.title)}</div>
-      <div class="meta">${esc(c.dateTh)}<br>ฟิตเนสอาคารกีฬา · จองเมื่อ ${fmt(b.bookedAt)}${b.wait?"<br>ถ้ามีคนยกเลิก ระบบจะเลื่อนคุณขึ้นเป็นผู้เข้าร่วมอัตโนมัติ":""}<br>ยกเลิกได้ถึง ${esc(CLOSE_TH[c.id])}</div>
-      <button class="btn btn-danger" data-cancel="${c.id}" ${isClosed(c)?"disabled":""}>${isClosed(c)?"ปิดรับยกเลิกแล้ว":b.wait?"ยกเลิกคิวสำรอง":"ยกเลิกการจอง"}</button>
+      <div class="meta">${esc(c.dateTh)}<br>ฟิตเนสอาคารกีฬา · จองเมื่อ ${fmt(b.bookedAt)}${b.wait&&!done?"<br>ถ้ามีคนยกเลิกหรือไม่ได้ Check-in ระบบจะเลื่อนคุณขึ้นตามลำดับคิว":""}${cancelClosed(c)||done?"":"<br>ยกเลิกได้ถึง "+esc(CANCEL_TH[c.id])}</div>
+      ${ciBox}
+      <div class="acts">${ciBtn}${cxBtn}</div>
     </div>`;}).join("");
+  const due = list.filter(b=>!b.checkedInAt && ciPhase(byId[b.classId])==="open");
+  const alert = due.length ? `<div class="ci-alert">⏰ วันนี้มีคลาส <b>Clinic #${due.map(b=>byId[b.classId].no).join(", #")}</b> กด Check-in ก่อน ${CHECKIN_UNTIL.replace(":",".")} น. ไม่งั้นสิทธิ์จะหลุด</div>` : "";
   const slot = !state.ready ? `<div class="ticket slot">กำลังโหลดการจองของคุณ…</div>`
-    : open ? `<div class="ticket slot"><div><div class="plus">+${open}</div>${list.length?"ยังจองเพิ่มได้อีก "+open+" คลาส":"ยังไม่มีการจอง"}<br>เลือกคลาสด้านล่างแล้วกด “จองคลาสนี้”</div></div>` : "";
+    : open && !list.length ? (()=>{ const rest=CLASSES.filter(c=>!list.some(b=>b.classId===c.id) && !isClosed(c));
+        const now=rest.filter(c=>!notOpen(c)), later=rest.filter(c=>notOpen(c));
+        const msg = now.length ? "เลือกคลาสด้านล่างแล้วกด “จองคลาสนี้”" : later.length ? "คลาสถัดไปยังไม่เปิดให้จอง" : "ไม่มีคลาสที่เปิดรับจองแล้ว";
+        return `<div class="ticket slot"><div>${list.length?"จองคลาสอื่นเพิ่มได้":"ยังไม่มีการจอง"}<br>${msg}</div></div>`; })() : "";
   const past = (state.history||[]).slice().sort((a,b)=>String(b.cancelledAt).localeCompare(String(a.cancelledAt)));
-  el.innerHTML = `<div class="mine-list">${tickets}${slot}</div>`
-  + (past.length? `<details class="history"><summary>ประวัติการยกเลิกของฉัน (${past.length})</summary><ul>${past.map(x=>`<li>${fmt(x.cancelledAt)} · Clinic #${byId[x.classId]?.no||"?"} · ${esc(x.reason)}</li>`).join("")}</ul></details>`:"");
+  el.innerHTML = alert + `<div class="mine-list">${tickets}${slot}</div>`
+  + (past.length? `<details class="history"${past.some(x=>x.noshow)?" open":""}><summary>ประวัติการยกเลิก/หลุดคิวของฉัน (${past.length})</summary><ul>${past.map(x=>`<li>${fmt(x.cancelledAt)} · Clinic #${byId[x.classId]?.no||"?"} · ${x.noshow?"หลุดคิว: ":""}${esc(x.reason)}</li>`).join("")}</ul></details>`:"");
 }
 function render(){ renderClasses(); renderDetails(); renderMine(); }
 
@@ -585,7 +641,8 @@ function askBook(cid){
   const wait = countFor(cid)>=CAP;
   openModal(`<h3>${wait?"ยืนยันจองคิวสำรอง":"ยืนยันการจอง"}</h3>
     <div class="sum">Clinic #${c.no} <b>${esc(c.title)}</b><br>${esc(c.dateTh)} · ฟิตเนสอาคารกีฬา<br>รหัสพนักงาน <b class="num" style="font-size:18px">${esc(state.emp)}</b></div>
-    ${wait?`<p class="note" style="margin:0">ที่นั่ง ${CAP} ที่เต็มแล้ว คุณจะได้คิวสำรอง ถ้ามีคนยกเลิกก่อน ${esc(CLOSE_TH[c.id])} ระบบจะเลื่อนคุณขึ้นเป็นผู้เข้าร่วมตามลำดับคิวอัตโนมัติ</p>`:""}
+    <div class="ci-box now"><b>สำคัญ:</b> ${esc(CI_DAY_TH[c.id])} ต้องเข้ามากด <b>Check-in</b> ก่อน 13.00 น. เพื่อยืนยันว่าเข้าร่วมแน่นอน ถ้าไม่กด สิทธิ์จะหลุดและส่งต่อให้คิวสำรอง</div>
+    ${wait?`<p class="note" style="margin:0">ที่นั่ง ${CAP} ที่เต็มแล้ว คุณจะได้คิวสำรอง ถ้ามีคนยกเลิกหรือไม่ได้ Check-in ภายใน ${esc(CANCEL_TH[c.id])} ระบบจะเลื่อนคุณขึ้นเป็นผู้เข้าร่วมตามลำดับคิวอัตโนมัติ</p>`:""}
     <p class="err" id="m-err" hidden></p>
     <div class="row"><button class="btn btn-ghost" data-close>ยกเลิก</button><button class="btn btn-accent" id="m-ok">${wait?"ยืนยันจองคิวสำรอง":"ยืนยันการจอง"}</button></div>`);
   $("#m-ok").addEventListener("click",()=>doBook(cid));
@@ -627,7 +684,18 @@ async function doCancel(cid){
     err.hidden=false; err.textContent=e.userMsg || "ยกเลิกไม่สำเร็จ ลองใหม่อีกครั้ง"; btn.disabled=false; btn.textContent="ยืนยันยกเลิก"; }
 }
 
+async function doCheckin(cid, btn){
+  const c=byId[cid]; btn.disabled=true; btn.textContent="กำลัง Check-in…";
+  try{
+    const j = await api("checkin",{empId:state.emp, token:state.token, classId:cid});
+    applyState(j); toast("Check-in Clinic #"+c.no+" เรียบร้อย เจอกัน 17.30 น.");
+  }catch(e){
+    if(e.userMsg==="กรุณาเข้าสู่ระบบอีกครั้ง"){ logout("เซสชันหมดอายุ กรุณาเข้าสู่ระบบอีกครั้ง"); return; }
+    toast(e.userMsg || "Check-in ไม่สำเร็จ ลองใหม่อีกครั้ง"); refresh();
+  }
+}
 document.addEventListener("click",e=>{
+  const k=e.target.closest("[data-checkin]"); if(k){ doCheckin(k.dataset.checkin, k); return; }
   const d=e.target.closest("[data-detail]"); if(d){ state.openDetail = state.openDetail===d.dataset.detail?null:d.dataset.detail; render(); if(state.openDetail) $("#detail-panel")?.scrollIntoView({behavior:"smooth",block:"start"}); return; }
   const b=e.target.closest("[data-book]"); if(b){ askBook(b.dataset.book); return; }
   const c=e.target.closest("[data-cancel]"); if(c){ askCancel(c.dataset.cancel); return; }
@@ -638,7 +706,7 @@ let adminPw = ""; let adminData = null; let adminTimer = null;
 function showAdmin(){
   $("#lock-form").hidden = !!adminPw; $("#admin-dash").hidden = !adminPw;
   if(!adminPw){ $("#admin-pw").value=""; $("#lock-err").hidden=true; setTimeout(()=>$("#admin-pw").focus(),0); return; }
-  loadAdmin(); stopAdminPoll(); adminTimer=setInterval(loadAdmin,15000);
+  loadAdmin(); stopAdminPoll(); adminTimer=setInterval(loadAdmin,30000);
 }
 function stopAdminPoll(){ if(adminTimer){ clearInterval(adminTimer); adminTimer=null; } }
 async function loadAdmin(){
@@ -657,6 +725,25 @@ $("#lock-back").addEventListener("click",()=>setView(state.token?"home":"login")
 $("#admin-exit").addEventListener("click",()=>{ adminPw=""; adminData=null; stopAdminPoll(); setView(state.token?"home":"login"); });
 $("#to-admin").addEventListener("click",()=>setView("admin"));
 $("#admin-search").addEventListener("input",()=>renderAdmin());
+$("#admin-cols").addEventListener("click",e=>{
+  const x=e.target.closest("[data-admcancel]"); if(!x) return;
+  const [cid,emp]=x.dataset.admcancel.split("|"), c=byId[cid];
+  openModal(`<h3>แอดมินยกเลิกการจอง</h3>
+    <div class="sum">Clinic #${c.no} <b>${esc(c.title)}</b><br>${esc(c.dateTh)}<br>รหัสพนักงาน <b class="num" style="font-size:18px">${esc(emp)}</b></div>
+    <label for="adm-rsn"><strong>เหตุผล</strong> <span style="color:var(--bad)">*</span></label>
+    <textarea id="adm-rsn" maxlength="300" placeholder="เช่น พนักงานแจ้งว่าติดประชุมด่วน"></textarea>
+    <p class="note" style="margin:0">ถ้าคนนี้ได้ที่นั่ง คิวสำรองลำดับแรกจะเลื่อนขึ้นแทนอัตโนมัติ</p>
+    <p class="err" id="m-err" hidden></p>
+    <div class="row"><button class="btn btn-ghost" data-close>กลับ</button><button class="btn btn-danger" id="m-ok">ยืนยันยกเลิก</button></div>`);
+  setTimeout(()=>$("#adm-rsn").focus(),0);
+  $("#m-ok").addEventListener("click",async()=>{
+    const reason=$("#adm-rsn").value.trim(), err=$("#m-err"), btn=$("#m-ok");
+    if(!reason){ err.hidden=false; err.textContent="กรุณาระบุเหตุผล"; return; }
+    btn.disabled=true; btn.textContent="กำลังยกเลิก…";
+    try{ const j=await api("adminCancel",{password:adminPw, classId:cid, empId:emp, reason}); closeModal(); toast(j.message); loadAdmin(); }
+    catch(ex){ err.hidden=false; err.textContent=ex.userMsg||"ยกเลิกไม่สำเร็จ"; btn.disabled=false; btn.textContent="ยืนยันยกเลิก"; }
+  });
+});
 $("#unbind-form").addEventListener("submit",async e=>{
   e.preventDefault();
   const emp=normEmp($("#unbind-emp").value), out=$("#unbind-msg"), btn=$("#unbind-form button");
@@ -673,18 +760,19 @@ function renderAdmin(){
   const cls = cid=> byId[cid] ? `#${byId[cid].no} ${byId[cid].title}` : cid;
   const people=new Set(d.classes.flatMap(c=>[...c.confirmed,...c.waitlist].map(a=>a.empId))).size;
   const total=d.classes.reduce((s,c)=>s+c.confirmed.length+c.waitlist.length,0);
-  $("#kpis").innerHTML = d.classes.map(k=>{ const c=byId[k.id]; return `<div class="kpi"><small>Clinic #${c.no} · ${c.day} ${c.mon}</small><b class="num">${k.confirmed.length}<span> / ${CAP}</span></b><small>คิวสำรอง ${k.waitlist.length} / ${WAIT}</small></div>`; }).join("")
+  $("#kpis").innerHTML = d.classes.map(k=>{ const c=byId[k.id]; return `<div class="kpi"><small>Clinic #${c.no} · ${c.day} ${c.mon}</small><b class="num">${k.confirmed.length}<span> / ${CAP}</span></b><small>คิวสำรอง ${k.waitlist.length} / ${WAIT} · Check-in ${[...k.confirmed,...k.waitlist].filter(a=>a.checkedInAt).length}${k.noshow?.length?" · หลุด "+k.noshow.length:""}</small></div>`; }).join("")
     + `<div class="kpi"><small>รวมทุกคลาส · ${people} คน · ยกเลิก ${d.cancels.length} ครั้ง</small><b class="num">${total}<span> / ${(CAP+WAIT)*3}</span></b><small>นับรวมคิวสำรอง</small></div>`;
-  const li = a=>`<li><span><span class="ts">${a.n}.</span> <span class="id">${esc(a.empId)}</span></span><span class="ts">${fmt(a.at)}</span></li>`;
+  const li = (a,cid)=>`<li><span><span class="ts">${a.n}.</span> <span class="id">${esc(a.empId)}</span>${a.checkedInAt?`<span class="ci-mark">Check-in ${fmt(a.checkedInAt).split(" ").slice(-2).join(" ")}</span>`:`<span class="ci-mark no">ยังไม่ Check-in</span>`}</span><span class="rt"><span class="ts">${fmt(a.at)}</span><button type="button" class="adm-x" data-admcancel="${cid}|${esc(a.empId)}">ยกเลิก</button></span></li>`;
   $("#admin-cols").innerHTML = d.classes.map(k=>{
     const c=byId[k.id];
     const conf = k.confirmed.map((a,i)=>({...a,n:i+1})).filter(a=>!q||String(a.empId).includes(q));
     const wl = k.waitlist.map((a,i)=>({...a,n:i+1})).filter(a=>!q||String(a.empId).includes(q));
-    return `<div class="acol"><h4>Clinic #${c.no} ${esc(c.title)}</h4><div class="when">${esc(c.dateTh)}<br>ปิดรับ ${esc(CLOSE_TH[c.id])}</div>
+    return `<div class="acol"><h4>Clinic #${c.no} ${esc(c.title)}</h4><div class="when">${esc(c.dateTh)}<br>ปิดรับจอง / ยกเลิก / Check-in ${esc(CANCEL_TH[c.id])}</div>
       <div class="cnt num">${k.confirmed.length} / ${CAP}</div>
-      ${conf.length?`<ol class="idlist">${conf.map(li).join("")}</ol>`:`<div class="empty" style="padding:12px;margin-top:8px">${q?"ไม่พบรหัสนี้":"ยังไม่มีผู้จอง"}</div>`}
+      ${conf.length?`<ol class="idlist">${conf.map(a=>li(a,k.id)).join("")}</ol>`:`<div class="empty" style="padding:12px;margin-top:8px">${q?"ไม่พบรหัสนี้":"ยังไม่มีผู้จอง"}</div>`}
       <div class="when" style="margin-top:10px;font-weight:600;color:var(--warn)">คิวสำรอง ${k.waitlist.length} / ${WAIT}</div>
-      ${wl.length?`<ol class="idlist">${wl.map(li).join("")}</ol>`:""}
+      ${wl.length?`<ol class="idlist">${wl.map(a=>li(a,k.id)).join("")}</ol>`:""}
+      ${k.noshow?.length?`<div class="when" style="margin-top:10px">หลุดคิว (ไม่ได้ Check-in): ${k.noshow.map(esc).join(", ")}</div>`:""}
     </div>`;
   }).join("");
   const cx = d.cancels.filter(x=>!q||String(x.empId).includes(q));
@@ -692,14 +780,15 @@ function renderAdmin(){
   $("#cx-body").innerHTML = cx.length? cx.map(x=>`<tr><td>${fmt(x.at)}</td><td class="id">${esc(x.empId)}</td><td>${esc(cls(x.classId))}${x.waitlist?" (คิวสำรอง)":""}</td><td>${esc(x.reason)}</td></tr>`).join("") : `<tr><td colspan="4" style="color:var(--muted)">ยังไม่มีการยกเลิก</td></tr>`;
   const lg = d.log.filter(x=>!q||String(x.empId).includes(q));
   $("#log-count").textContent = d.log.length+" รายการ";
-  $("#log-body").innerHTML = lg.length? lg.map(x=>`<tr><td>${fmt(x.at)}</td><td><span class="pill ${x.type}">${x.type==="book"?(x.waitlist?"จองคิวสำรอง":"จอง"):"ยกเลิก"}</span></td><td class="id">${esc(x.empId)}</td><td>${esc(cls(x.classId))}</td></tr>`).join("") : `<tr><td colspan="4" style="color:var(--muted)">ยังไม่มีข้อมูล</td></tr>`;
+  $("#log-body").innerHTML = lg.length? lg.map(x=>`<tr><td>${fmt(x.at)}</td><td><span class="pill ${x.type}">${({book:x.waitlist?"จองคิวสำรอง":"จอง",cancel:"ยกเลิก",checkin:"Check-in",noshow:"หลุดคิว"})[x.type]||x.type}</span></td><td class="id">${esc(x.empId)}</td><td>${esc(cls(x.classId))}</td></tr>`).join("") : `<tr><td colspan="4" style="color:var(--muted)">ยังไม่มีข้อมูล</td></tr>`;
   $("#reg-count").textContent = d.users+" รหัสลงทะเบียนแล้ว";
 }
 
 /* ---------- boot ---------- */
 setView(state.token ? "home" : "login");
 refresh();
-setInterval(()=>{ if(document.visibilityState==="visible" && state.view==="home") refresh(); }, 20000);
+setInterval(()=>{ if(document.visibilityState==="visible" && state.view==="home") refresh(); }, 45000);
+setInterval(()=>{ if(state.view==="home") renderMine(); }, 60000);
 document.addEventListener("visibilitychange",()=>{ if(document.visibilityState==="visible" && state.view==="home") refresh(); });
 </script>
 </body>
